@@ -18,7 +18,7 @@ if let result = triangleArea(x: 3, y: -6) {
 }
 //:  Create a function called `add` that takes two optional integers as parameters and returns an optional integer. You should use one `guard` statement to unwrap both optional parameters, returning `nil` in the `guard` body if one or both of the parameters doesn't have a value. If both parameters can successfully be unwrapped, return their sum. Call the function once with non-`nil` numbers and once with at least one parameter being `nil`.
 func addOptionals(num1: Int?, num2: Int?) -> Int? {
-    guard let num1 = num1, let num2 = num2 else {
+    guard let num1, let num2 else {
         return nil
     }
     return num1 + num2

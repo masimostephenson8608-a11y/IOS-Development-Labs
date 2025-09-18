@@ -19,13 +19,13 @@ cardInHand = Suit.spades
 func getFortune(cardSuit: Suit) {
     switch cardSuit {
     case .clubs:
-        print("Clubs")
+        print("you will get Clubs")
     case .diamonds:
-        print("Diamonds")
+        print("you will get Diamonds")
     case.spades:
-        print("Spades")
+        print("you will get Spades")
     case .hearts:
-        print("Hearts")
+        print("you will get Hearts")
     }
 }
 
@@ -35,11 +35,19 @@ getFortune(cardSuit: .clubs)
 getFortune(cardSuit: .diamonds)
 //:  Create a `Card` struct below. It should have two properties, one for `suit` of type `Suit` and another for `value` of type `Int`.
 struct Card {
+    
+    enum Value {
+        case ace, two, three, four, five, six, seven, eight, nine, ten, jack, queen, king
+    }
     let suit: Suit
-    let value: Int
+    let value: Value
 }
 
 //:  How many values can playing cards have? How many values can `Int` be? It would be safer to have an enum for the card's value as well. Inside the struct above, create an enum for `Value`. It should have cases for `ace`, `two`, `three`, `four`, `five`, `six`, `seven`, `eight`, `nine`, `ten`, `jack`, `queen`, `king`. Change the type of `value` from `Int` to `Value`. Initialize two `Card` objects and print a statement for each that details the card's value and suit.
+let card = Card(suit: .hearts, value: .three)
+let card2 = Card(suit: .spades, value: .king)
+print(card)
+print(card2)
 
 
 /*:
