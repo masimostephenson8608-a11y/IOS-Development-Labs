@@ -48,13 +48,18 @@ struct ContentView: View {
                 }
             }.frame(width: 350, height: 100, alignment: .center).background(.ultraThinMaterial).containerShape(.capsule).foregroundStyle(Color.accentColor)
         }.frame(width: 325).padding(30).overlay(RoundedRectangle(cornerRadius: 30, style: .circular).fill(.blendMode(.softLight)))
-        Spacer()
+        Spacer(minLength: 50)
+        HStack(spacing: -5) {
+            ForEach(0...130, id: \.self) {text in Text("-")}
+        }
         Spacer(minLength: 100)
         ZStack(alignment: .top) {
+            
             RoundedRectangle(cornerRadius: 50).fill(.ultraThinMaterial).frame(height: 310)
+            
             VStackLayout(alignment: .leading, spacing: 30) {
-                ForEach(settingOptions, id: \.self) {text in Text(text).frame(width: 300, height: 50, alignment: .leading).padding(.leading, 20).background(.black).clipShape(RoundedRectangle(cornerRadius: 50)).foregroundStyle(.white)
-                }
+                ForEach(settingOptions, id: \.self) {text in Text(text).frame(width: 300, height: 50, alignment: .leading)
+                }.padding(.leading, 20).background(.black).clipShape(RoundedRectangle(cornerRadius: 50)).foregroundStyle(.white)
                 Spacer()
             }
         }
