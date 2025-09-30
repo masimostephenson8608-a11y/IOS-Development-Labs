@@ -10,10 +10,18 @@ import SwiftUI
 struct ContentView: View {
     @State var isPressed = false
     @State var isPressed2 = false
+    @State var clickCount = 0
+    @State var showSquare = false
 
     @State var whoKnows = false
     var body: some View {
         VStack {
+            let square = Rectangle()
+            if showSquare == false {
+                square.hidden()
+            } else {
+                square
+            }
             Button {
                 withAnimation(.bouncy) {
                     isPressed = true
@@ -52,39 +60,41 @@ struct ContentView: View {
             Button {
                 
             } label: {
-                Text("Button5")
+                Text("Button5").padding(10)
 
-            }
+            }.background(.red).clipShape(Capsule())
             Button {
                 
             } label: {
-                Text("Button6")
+                Text("Button6").padding(10)
 
-            }
+            }.background(.ultraThickMaterial).clipShape(Capsule()).foregroundStyle(LinearGradient(colors: [.red, .blue], startPoint: .leading, endPoint: .trailing))
             Button {
-                
+                clickCount += 1
             } label: {
-                Text("Button7")
+                Text("Count Up").font(.title).padding()
 
-            }
+            }.frame(width: 125).background(.purple).clipShape(Circle())
             Button {
-                
+                showSquare.toggle()
             } label: {
-                Text("Button8")
+                Text("Show the Square")
 
-            }
+            }.frame(width: 150).background(Gradient(colors: [.black, .white])).clipShape(Capsule()).foregroundStyle(.red)
             Button {
                 
             } label: {
                 Text("Button9")
 
-            }
+            }.background(Ellipse().foregroundStyle(.red))
             Button {
                 
             } label: {
                 Text("Button10")
 
-            }.disabled(whoKnows)
+            }.disabled(whoKnows).hidden()
+            
+            Text("Count: \(clickCount)")
         }
         .padding()
     }
