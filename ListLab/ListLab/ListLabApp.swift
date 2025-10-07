@@ -11,6 +11,7 @@ import SwiftUI
 struct ListLabApp: App {
     var body: some Scene {
         WindowGroup {
+            CarsView()
         }
     }
 }

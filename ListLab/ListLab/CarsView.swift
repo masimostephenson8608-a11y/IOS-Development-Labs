@@ -58,7 +58,7 @@ struct CarsView: View {
 
                                         NavigationLink(
                                             "Click for more details",
-                                            destination: DetailsView()
+                                            destination: DetailsView(carDetail: car)
                                         )
                                         .fontDesign(.serif).foregroundStyle(
                                             .white.secondary
