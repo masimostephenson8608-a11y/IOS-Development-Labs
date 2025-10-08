@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+let someFormat: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .none
+    formatter.zeroSymbol = ""
+    return formatter
+}()
+
 @main
 struct ListLabApp: App {
     var body: some Scene {

@@ -8,18 +8,21 @@
 import SwiftUI
 
 struct DetailsView: View {
-    let carDetail: Car
+    @Binding var carDetail: Car
     @State private var makeChange: String = ""
     @State private var modelChange: String = ""
     @State private var milesChange: Int = 0
     @State private var yearChange: Int = 0
+    var ableToSubmit: Bool {
+        if !makeChange.isEmpty && !modelChange.isEmpty
+            && milesChange != carDetail.miles && yearChange != carDetail.year {
+            return false
+        } else {
+            return true
+        }
+    }
     
-    let someFormat: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .none
-        formatter.zeroSymbol = ""
-        return formatter
-    }()
+   
     var body: some View {
         Form {
             Section(header: Text("Car Information")) {
@@ -30,7 +33,24 @@ struct DetailsView: View {
                 TextField("\(carDetail.year, format: .number)", value: $yearChange, formatter: someFormat)
                     .keyboardType(.numberPad)
             }
-        }
+            
+            Section {
+                Button(role: .confirm) {
+                    carDetail.submit(make: makeChange,
+                                     model: modelChange, miles: milesChange, year: yearChange)
+                } label: {
+                    Text("Confirm")
+                }.disabled(ableToSubmit)
+            }
+        }.scrollContentBackground(.hidden)
+            .background(RadialGradient(
+                colors: [.blue, .black],
+                center: .topLeading,
+                startRadius: 20,
+                endRadius: 900
+            ).ignoresSafeArea())
+        
+        
     }
 }
 
