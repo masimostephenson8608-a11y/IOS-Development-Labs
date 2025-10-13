@@ -11,7 +11,10 @@ import SwiftUI
 struct PersonalityQuizApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView()
+            ZStack {
+                BackgroundView()
+                MainView()
+            }
         }
     }
 }
