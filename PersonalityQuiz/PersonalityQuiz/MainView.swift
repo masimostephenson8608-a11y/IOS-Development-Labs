@@ -9,10 +9,33 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text( /*@START_MENU_TOKEN@*/"Hello, World!" /*@END_MENU_TOKEN@*/)
+    }
+}
+
+struct TitleView: View {
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Image(.sunrise)
+                VStack {
+                    Rectangle().frame(width: 1, height: 100).hidden()
+                    Text("Welcome to my").font(.headline.weight(.heavy))
+                    Text("Personality Quiz").font(.largeTitle.bold())
+                    Spacer()
+                }
+                .padding(.vertical, 75)
+            }
+            .navigationTitle("")
+            .toolbar {
+                Button("Begin") {
+                    
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    MainView()
+    TitleView()
 }

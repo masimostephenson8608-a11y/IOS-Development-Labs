@@ -9,19 +9,44 @@ import SwiftUI
 
 /* `TitleView`, `QuestionFlowView`, `RangedQuestionSubview`, `MultipleQuestionSubview`, `SingleQuestionSubview`, and `ResultsView`. `QuestionFlowView` */
 
-struct QuestionsViews: View {
+struct QuestionsView: View {
     var body: some View {
         Text("hi")
     }
 }
 
-struct TitleView: View {
+struct QuestionFlowView: View {
     var body: some View {
-        Text("Welcome to my").font(.headline.weight(.heavy))
-        Text("Personality Quiz").font(.largeTitle.bold())
+        Text("hi")
     }
 }
 
+struct RangedQuestionSubview: View {
+    var body: some View {
+        Text("hi")
+    }
+}
+
+struct MultipleQuestionSubview: View {
+    var body: some View {
+        Text("hi")
+    }
+}
+
+struct SingleQuestionSubview: View {
+    var body: some View {
+        Text("hi")
+    }
+}
+
+struct ResultsView: View {
+    var body: some View {
+        Text("hi")
+    }
+}
+
+
+
 #Preview {
-    TitleView()
+    QuestionsView()
 }
