@@ -9,7 +9,10 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text( /*@START_MENU_TOKEN@*/"Hello, World!" /*@END_MENU_TOKEN@*/)
+        ZStack {
+            BackgroundView()
+            Text("HI")
+        }
     }
 }
 
@@ -28,9 +31,7 @@ struct TitleView: View {
             }
             .navigationTitle("")
             .toolbar {
-                Button("Begin") {
-                    
-                }
+                NavigationLink("Begin", destination: MainView())
             }
         }
     }

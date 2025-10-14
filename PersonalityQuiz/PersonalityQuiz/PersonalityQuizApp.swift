@@ -13,7 +13,7 @@ struct PersonalityQuizApp: App {
         WindowGroup {
             ZStack {
                 BackgroundView()
-                MainView()
+                TitleView()
             }
         }
     }
