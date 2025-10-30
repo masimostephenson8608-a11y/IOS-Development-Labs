@@ -7,7 +7,7 @@
 
 import Foundation
 
-/* Delegates is like seperating some duties from the actual object/instance, and giving it to another instance made entirely for doing the work, set up using protocols.
+/* Delegates are like seperating some duties from the actual object/instance, and giving it to another instance made entirely for doing the work, set up using protocols.
  1. First you create a Protocol thats set up with functions to deal with the work.
  */
 protocol somethingDelegate {
