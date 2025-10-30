@@ -30,12 +30,14 @@ class CreditCard: Card {
         spendingLimit - spent
     }
     
-    init(bankNumber: Int,
+    init(
+        bankNumber: Int,
          name: String,
          securityCode: Int,
          spendingLimit: Double,
          spent: Double,
-         balanceDue: Double) {
+         balanceDue: Double
+    ) {
         self.bankNumber = bankNumber
         self.name = name
         self.securityCode = securityCode
