@@ -26,7 +26,7 @@ try? divide(5, by: 1)
 
 //:  Finally, call the function using `try!` and test it with an invalid input. What happens if the input is invalid? Write a comment explaining your answer, then set a valid input.
 try! divide(5, by: 1)
-// It gives an error message
+// it crashes the app if it throws
 /*:
 [Previous](@previous)  |  page 2 of 4  |  [Next: Exercise - Associated Values](@next)
  */

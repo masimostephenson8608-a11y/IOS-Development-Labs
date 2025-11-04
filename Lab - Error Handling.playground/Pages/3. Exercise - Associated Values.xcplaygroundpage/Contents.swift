@@ -51,7 +51,7 @@ do {
 } catch CommunicationError.unknown {
     print("unkown")
 } catch {
-    print("error")
+    print(error.localizedDescription)
 }
 
 /*:
