@@ -20,6 +20,8 @@ struct QuestionFlowView: View {
             case 2:
                 RangedQuestionSubview(question: manager.questionList[2], manager: manager) //question: manager.questionList[2]
             case 3:
+                RangedQuestionSubview(question: manager.questionList[3], manager: manager)
+            case 4:
                 ResultsView()
             default:
                 ResultsView()

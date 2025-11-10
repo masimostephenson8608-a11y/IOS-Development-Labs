@@ -106,6 +106,22 @@ class QuizManager {
                 Answer(dessert: .LemonTart, text: "9"),
                 Answer(dessert: .LemonTart, text: "10")
              ]
+            ),
+        Question(
+            text: "On a scale from 1 to 10, 1 being you like mountains the most and 10 being the beach",
+            questionType: .rangedQuestion,
+            answers: [
+                Answer(dessert: .Brownie, text: "1"),
+                Answer(dessert: .Brownie, text: "2"),
+                Answer(dessert: .Brownie, text: "3"),
+                Answer(dessert: .IceCream, text: "4"),
+                Answer(dessert: .IceCream, text: "5"),
+                Answer(dessert: .IceCream, text: "6"),
+                Answer(dessert: .StrawberryMacaron, text: "7"),
+                Answer(dessert: .StrawberryMacaron, text: "8"),
+                Answer(dessert: .LemonTart, text: "9"),
+                Answer(dessert: .LemonTart, text: "10")
+             ]
             )
     ]
     
