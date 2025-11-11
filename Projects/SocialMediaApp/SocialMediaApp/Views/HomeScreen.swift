@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @State var viewModel = HomeScreenViewModel()
+    @State var viewModel: HomeScreenViewModel
+    let user: User
+    
+    init(user: User, viewModel: HomeScreenViewModel) {
+        self._viewModel = State(wrappedValue: viewModel)
+        self.user = user
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -47,16 +54,22 @@ struct HomeScreen: View {
                                     HStack {
                                         Spacer()
                                         Button {
-                                            viewModel.clickLike(post: post)
+                                            Task {
+                                                try await viewModel.clickLike(post: post)
+                                            }
                                         } label: {
-                                            Image(systemName: "heart")
+                                            if post.liked == true {
+                                                Image(systemName: "heart.fill")
+                                            } else {
+                                                Image(systemName: "heart")
+                                            }
                                         }
                                         .frame(width: 35, height: 35).glassEffect()
                                         Text("\(post.likes)")
                                             .foregroundStyle(.white.secondary)
                                         Spacer()
                                         Button {
-                                            viewModel.showingSheet = true
+                                            viewModel.selectedPost = post
                                         } label: {
                                             Image(systemName: "bubble")
                                         }
@@ -64,9 +77,6 @@ struct HomeScreen: View {
                                         Text("\(post.comments.count)")
                                             .foregroundStyle(.white.secondary)
                                         Spacer()
-                                            .sheet(isPresented: $viewModel.showingSheet) {
-                                                CommentView(post: post)
-                                            }
                                     }
                                     .font(.title)
                                     Spacer()
@@ -76,7 +86,10 @@ struct HomeScreen: View {
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .padding(10)
-                            }
+                            }.glassEffect(in: RoundedRectangle(cornerRadius: 20)).padding(.horizontal, 20)
+                        }
+                        .sheet(item: $viewModel.selectedPost) { post in
+                            CommentView(user: user, viewModel: CommentViewModel(homeViewModel: viewModel, postID: post.id))
                         }
                     }
                 }
@@ -84,12 +97,16 @@ struct HomeScreen: View {
             .navigationTitle("For You Page")
             .navigationBarTitleDisplayMode(.large)
         }
+        .onAppear() {
+            Task {
+                try await viewModel.fetchPosts()
+            }
+        }
     }
 }
 
-var viewModel = HomeScreenViewModel()
 #Preview {
-    HomeScreen(viewModel: viewModel)
+    HomeScreen(user: User(username: "masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService(), selectedPost: nil))
 }
 
 

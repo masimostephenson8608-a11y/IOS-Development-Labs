@@ -11,7 +11,7 @@ import SwiftUI
 struct SocialMediaAppApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
+            HomeScreen(user: User(username: "Masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService()))
         }
     }
 }
