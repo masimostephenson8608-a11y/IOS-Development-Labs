@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @State var viewModel: HomeScreenViewModel
+    @State var viewModel: HomeScreenViewModel // MAKE INSTANCE OF HomeScreenViewModel
     let user: User
     
-    init(user: User, viewModel: HomeScreenViewModel) {
+    init(user: User, viewModel: HomeScreenViewModel) {   // Initailizer for the user and the STATE of the viewModel
         self._viewModel = State(wrappedValue: viewModel)
         self.user = user
     }
@@ -25,7 +25,7 @@ struct HomeScreen: View {
                         ForEach(viewModel.posts) { post in
                             ZStack {
                                 VStack {
-                                    Spacer()
+                                    Spacer()        // Getting the profile photos to display above the posts
                                     if let profilePhoto = post.user.profilePicture {
                                         HStack {
                                             Image(profilePhoto)
@@ -53,7 +53,7 @@ struct HomeScreen: View {
                                     }
                                     HStack {
                                         Spacer()
-                                        Button {
+                                        Button {        // Button for liking posts
                                             Task {
                                                 try await viewModel.clickLike(post: post)
                                             }
@@ -88,7 +88,7 @@ struct HomeScreen: View {
                                 .padding(10)
                             }.glassEffect(in: RoundedRectangle(cornerRadius: 20)).padding(.horizontal, 20)
                         }
-                        .sheet(item: $viewModel.selectedPost) { post in
+                        .sheet(item: $viewModel.selectedPost) { post in  // Making the sheet view for the Comments View
                             CommentView(user: user, viewModel: CommentViewModel(homeViewModel: viewModel, postID: post.id))
                         }
                     }
@@ -99,7 +99,7 @@ struct HomeScreen: View {
         }
         .onAppear() {
             Task {
-                try await viewModel.fetchPosts()
+                try await viewModel.fetchPosts()  // MARK: Fetch Posts
             }
         }
     }
@@ -109,7 +109,7 @@ struct HomeScreen: View {
     HomeScreen(user: User(username: "masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService(), selectedPost: nil))
 }
 
-
+//MARK: MockPosts
 var mockPosts: [Post] = [
     Post(picture: "Picture1", user: User.user, likes: 40, comments: []),
     Post(picture: "Picture2", user: User.user, likes: 20, comments: []),

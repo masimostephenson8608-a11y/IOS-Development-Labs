@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Observation
 
+//MARK: HomeScreenViewModel
 @Observable
 class HomeScreenViewModel {
     var apiService: APIService
@@ -16,6 +17,7 @@ class HomeScreenViewModel {
     
     var posts: [Post] = []
     
+    // Initializing the properties such as the Mock API Service
     init(apiService: APIService, selectedPost: Post? = nil) {
         self.apiService = apiService
         self.selectedPost = selectedPost
@@ -25,6 +27,7 @@ class HomeScreenViewModel {
         posts = try await apiService.getAllPosts()
     }
     
+    // Function to like posts
     func clickLike(post: Post) async throws {
         try await apiService.addLike(to: post)
         

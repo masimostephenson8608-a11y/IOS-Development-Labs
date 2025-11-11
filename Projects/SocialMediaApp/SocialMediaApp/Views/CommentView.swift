@@ -17,6 +17,7 @@ struct CommentView: View {
     @Environment(\.dismiss) var dismiss
     let user: User
     @State var viewModel: CommentViewModel
+    //MARK: Initializing Properties
 
     var body: some View {
         NavigationStack {
@@ -28,6 +29,7 @@ struct CommentView: View {
                             .navigationBarTitleDisplayMode(.inline)
                     } else {
                         VStack {
+                            //MARK: ForEach Loop
                             ForEach(post.comments) { comment in
                                 Text("\(comment.content)").font(.largeTitle)
                             }
