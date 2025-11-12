@@ -67,3 +67,27 @@ class CommentViewModel {
         }
 
 }
+
+@Observable
+class ProfileViewModel {
+    var homeViewModel: HomeScreenViewModel
+    let user: User
+    var posts: [Post] {
+        var userPosts: [Post] = []
+        Task {
+           try await homeViewModel.fetchPosts()
+        }
+        
+        for post in userPosts {
+            if post.user.id == user.id {
+                userPosts.append(post)
+            }
+        }
+        return userPosts
+    }
+    
+    init(homeViewModel: HomeScreenViewModel, user: User) {
+        self.homeViewModel = homeViewModel
+        self.user = user
+    }
+}

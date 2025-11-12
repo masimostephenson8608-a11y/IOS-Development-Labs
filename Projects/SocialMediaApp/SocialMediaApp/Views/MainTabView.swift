@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @State var homeViewModel = HomeScreenViewModel(apiService: MockAPIService())
+    var user = User(username: "Masimo Stephenson", profilePicture: nil, bio: "WHS 2026")
     var body: some View {
         TabView {           // TAB VIEW FOR HOME SCREEN AND PROFILE SCREEN
             Tab() {
-                HomeScreen(user: User(username: "Masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService()))
+                HomeScreen(user: user, viewModel: homeViewModel )
             } label: {
                 Image(systemName: "house.fill")
                 Text("For you")
             }
             
             Tab () {
-                
+                ProfileView(viewModel: ProfileViewModel(homeViewModel: HomeScreenViewModel(apiService: MockAPIService()), user: user))
             } label: {
                 Image(systemName: "person.circle.fill")
                 Text("Profile")
