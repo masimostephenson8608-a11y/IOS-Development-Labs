@@ -29,9 +29,26 @@ struct CommentView: View {
                             .navigationBarTitleDisplayMode(.inline)
                     } else {
                         VStack {
-                            //MARK: ForEach Loop
-                            ForEach(post.comments) { comment in
-                                Text("\(comment.content)").font(.largeTitle)
+                            List {
+                                //MARK: ForEach Loop
+                                ForEach(post.comments) { comment in
+                                    Section {
+                                        HStack {
+                                            if let profilePicture = user.profilePicture {
+                                                Image(profilePicture)
+                                                    .padding(.trailing, 15)
+                                            } else {
+                                                Image(systemName: "person.circle.fill")
+                                                    .resizable()
+                                                    .frame(width: 50, height: 50)
+                                                    .padding(.trailing, 15)
+                                                
+                                            }
+                                            Text(user.username).font(.title2)
+                                        }
+                                        Text("\(comment.content)").font(.title3)
+                                    }
+                                }
                             }
 
                         }
