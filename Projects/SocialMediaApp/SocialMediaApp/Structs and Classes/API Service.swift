@@ -12,8 +12,10 @@ import Observation
 protocol APIService {
     func getAllPosts() async throws -> [Post]
     func addLike(to: Post) async throws
+    func fetchUserData() async throws -> User
 }
 
+@Observable
 class MockAPIService: APIService {
     func getAllPosts() async throws -> [Post] {
         return mockPosts
@@ -21,5 +23,9 @@ class MockAPIService: APIService {
     
     func addLike(to: Post) async throws {
         print("Liked!")
+    }
+    
+    func fetchUserData() async throws -> User {
+        return User(username: "", profilePicture: nil, bio: nil)
     }
 }

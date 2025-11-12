@@ -20,7 +20,7 @@ struct MainTabView: View {
             }
             
             Tab () {
-                ProfileView(viewModel: ProfileViewModel(homeViewModel: HomeScreenViewModel(apiService: MockAPIService()), user: user))
+                ProfileView(viewModel: ProfileViewModel(homeViewModel: homeViewModel, user: user))
             } label: {
                 Image(systemName: "person.circle.fill")
                 Text("Profile")

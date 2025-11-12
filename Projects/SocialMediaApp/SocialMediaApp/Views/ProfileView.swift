@@ -55,6 +55,7 @@ struct ProfileView: View {
                         .padding(20)
                     
                     Text("\(bio)")
+                        .foregroundStyle(.white.secondary)
                 } else {
                     Spacer()
                     Text("No Bio")
