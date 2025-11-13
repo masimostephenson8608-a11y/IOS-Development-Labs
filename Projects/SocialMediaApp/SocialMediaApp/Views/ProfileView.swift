@@ -9,25 +9,45 @@ import SwiftUI
 
 struct ProfileView: View {
     @State var viewModel: ProfileViewModel
-    
+
     var body: some View {
         ZStack {
-            RadialGradient(colors: [.gray, .black], center: .bottomLeading, startRadius: 1000, endRadius: 150).ignoresSafeArea()
+            RadialGradient(
+                colors: [.gray, .black],
+                center: .bottomLeading,
+                startRadius: 1000,
+                endRadius: 150
+            ).ignoresSafeArea()
+            if let image = viewModel.user.backgroundProfilePicture {
+                VStack {
+                    Image(image)
+                        .resizable()
+                        .frame(height: 450)
+                        .ignoresSafeArea()
+                    Spacer()
+                }
+            }
             VStack {
-                HStack() {
-                    
+                Spacer()
+                HStack {
+
                     if let profilePhoto = viewModel.user.profilePicture {
                         HStack {
                             Spacer()
                             Image(profilePhoto)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .clipShape(.circle)
                                 .padding(.horizontal, 10)
                             Spacer()
                             Text(viewModel.user.username)
                                 .font(.title2.bold())
                                 .foregroundStyle(.secondary)
                             Spacer()
-                            
+
                         }
+                        .padding(.vertical, 15)
+                        .glassEffect(in: RoundedRectangle(cornerRadius: 25))
                     } else {
                         HStack {
                             Spacer()
@@ -35,7 +55,7 @@ struct ProfileView: View {
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .padding(.trailing, 15)
-                            
+
                             Text(viewModel.user.username)
                                 .font(.title2.bold())
                                 .foregroundStyle(.secondary)
@@ -47,23 +67,52 @@ struct ProfileView: View {
                     }
                 }
                 .padding(20)
+
+                Spacer()
                 
-                if let bio = viewModel.user.bio {
-                    Text("Bio")
-                        .font(.largeTitle.bold())
-                        .foregroundStyle(.white)
-                        .padding(20)
+                HStack {
+                    if let bio = viewModel.user.bio {
+                        VStack {
+                            Text("Bio:")
+                                .font(.largeTitle.bold())
+                                .foregroundStyle(.white)
+                                .padding(20)
+                            
+                            Text("\(bio)")
+                                .foregroundStyle(.white.secondary)
+                        }
+                    } else {
+                        Spacer()
+                        Text("No Bio")
+                            .font(.custom("Roboto", size: 50))
+                            .foregroundStyle(.white)
+                            .padding(20)
+                    }
                     
-                    Text("\(bio)")
-                        .foregroundStyle(.white.secondary)
-                } else {
                     Spacer()
-                    Text("No Bio")
-                        .font(.custom("Roboto", size: 50))
-                        .foregroundStyle(.white)
-                        .padding(20)
+                    
+                    VStack {
+                        if !viewModel.user.interests.isEmpty {
+                            Text("Interests:")
+                                .font(.largeTitle.bold())
+                                .foregroundStyle(.white)
+                                .padding(20)
+                        
+                        
+                            ForEach(viewModel.user.interests, id: \.self) { text in
+                                Text("\(text)").font(.title2)
+                                    .foregroundStyle(.white.secondary)
+                            }
+                        } else {
+                            Text("No Interests")
+                                .font(.largeTitle.bold())
+                                .foregroundStyle(.white)
+                                .padding(20)
+                        }
+                    }
+
                 }
-                
+
                 if !viewModel.user.posts.isEmpty {
                     ScrollView {
                         LazyVStack {
@@ -77,47 +126,70 @@ struct ProfileView: View {
                                         }
                                         HStack {
                                             Spacer()
-                                            Button {        // Button for liking posts
+                                            Button {  // Button for liking posts
                                                 Task {
-                                                    try await viewModel.homeViewModel.clickLike(post: post)
+                                                    try await viewModel
+                                                        .homeViewModel
+                                                        .clickLike(post: post)
                                                 }
                                             } label: {
                                                 if post.liked == true {
-                                                    Image(systemName: "heart.fill")
+                                                    Image(
+                                                        systemName: "heart.fill"
+                                                    )
                                                 } else {
                                                     Image(systemName: "heart")
                                                 }
                                             }
-                                            .frame(width: 35, height: 35).glassEffect()
+                                            .frame(width: 35, height: 35)
+                                            .glassEffect()
                                             Text("\(post.likes)")
-                                                .foregroundStyle(.white.secondary)
+                                                .foregroundStyle(
+                                                    .white.secondary
+                                                )
                                             Spacer()
                                             Button {
-                                                viewModel.homeViewModel.selectedPost = post
+                                                viewModel.homeViewModel
+                                                    .selectedPost = post
                                             } label: {
                                                 Image(systemName: "bubble")
                                             }
-                                            .frame(width: 45, height: 45).glassEffect()
+                                            .frame(width: 45, height: 45)
+                                            .glassEffect()
                                             Text("\(post.comments.count)")
-                                                .foregroundStyle(.white.secondary)
+                                                .foregroundStyle(
+                                                    .white.secondary
+                                                )
                                             Spacer()
                                         }
                                         .font(.title)
                                         Spacer()
-                                            .onAppear() {
+                                            .onAppear {
                                                 print(post.comments)
                                             }
                                     }
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        maxHeight: .infinity
+                                    )
                                     .padding(10)
-                                }.glassEffect(in: RoundedRectangle(cornerRadius: 20)).padding(.horizontal, 20)
+                                }.glassEffect(
+                                    in: RoundedRectangle(cornerRadius: 20)
+                                ).padding(.horizontal, 20)
                             }
-                            .sheet(item: $viewModel.homeViewModel.selectedPost) { post in  // Making the sheet view for the Comments View
-                                CommentView(user: viewModel.user, viewModel: CommentViewModel(homeViewModel: viewModel.homeViewModel, postID: post.id))
+                            .sheet(item: $viewModel.homeViewModel.selectedPost)
+                            { post in  // Making the sheet view for the Comments View
+                                CommentView(
+                                    user: viewModel.user,
+                                    viewModel: CommentViewModel(
+                                        homeViewModel: viewModel.homeViewModel,
+                                        postID: post.id
+                                    )
+                                )
                             }
                         }
                     }
-                    
+
                     Spacer()
                 }
             }
@@ -127,6 +199,6 @@ struct ProfileView: View {
 }
 
 /*
-    
+
  }
  */

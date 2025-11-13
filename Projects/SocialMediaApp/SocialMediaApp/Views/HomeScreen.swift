@@ -29,6 +29,9 @@ struct HomeScreen: View {
                                     if let profilePhoto = post.user.profilePicture {
                                         HStack {
                                             Image(profilePhoto)
+                                                .resizable()
+                                                .frame(width: 50, height: 50)
+                                                .clipShape(.circle)
                                                 .padding(.horizontal, 10)
                                             Text(post.user.username)
                                                 .font(.title2)
