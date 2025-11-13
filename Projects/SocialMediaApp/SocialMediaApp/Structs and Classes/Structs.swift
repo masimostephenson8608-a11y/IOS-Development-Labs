@@ -14,8 +14,8 @@ import Observation
 struct User: Codable, Identifiable {
     var id = UUID()
     let username: String
-    let profilePicture: String?
-    let bio: String?
+    var profilePicture: String?
+    var bio: String?
     var posts: [Post] = []
     
     static var user = User(username:"EWW", profilePicture: nil, bio: nil)

@@ -18,7 +18,16 @@ protocol APIService {
 @Observable
 class MockAPIService: APIService {
     func getAllPosts() async throws -> [Post] {
-        return mockPosts
+        return [
+            Post(picture: "Picture1", user: User.user, likes: 40, comments: []),
+            Post(picture: "Picture2", user: User.user, likes: 20, comments: []),
+            Post(picture: "Picture3", user: User.user, likes: 32, comments: [
+                Comment(user: User.user, content: "Lame"),
+                Comment(user: User.user, content: "WOw"),
+                Comment(user: User.user, content: "No Way!"),
+                Comment(user: User.user, content: "HI")
+            ])
+        ]
     }
     
     func addLike(to: Post) async throws {
@@ -26,6 +35,6 @@ class MockAPIService: APIService {
     }
     
     func fetchUserData() async throws -> User {
-        return User(username: "", profilePicture: nil, bio: nil)
+        return User(username: "Masimo Stephenson", profilePicture: nil, bio: "WHS 2026")
     }
 }

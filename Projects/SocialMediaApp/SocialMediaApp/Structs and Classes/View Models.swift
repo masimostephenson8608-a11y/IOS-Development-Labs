@@ -14,6 +14,8 @@ import Observation
 class HomeScreenViewModel {
     var apiService: APIService
     var selectedPost: Post? = nil
+    var user: User?
+    
     
     var posts: [Post] = []
     
@@ -21,10 +23,21 @@ class HomeScreenViewModel {
     init(apiService: APIService, selectedPost: Post? = nil) {
         self.apiService = apiService
         self.selectedPost = selectedPost
+        Task {
+            await loadUser()
+        }
     }
     
     func fetchPosts() async throws {
         posts = try await apiService.getAllPosts()
+    }
+    
+    func loadUser() async {
+        do {
+            self.user = try await apiService.fetchUserData()
+        } catch {
+            print("Failed to load user:", error)
+        }
     }
     
     // Function to like posts

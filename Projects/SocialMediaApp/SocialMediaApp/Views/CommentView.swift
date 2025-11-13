@@ -24,9 +24,11 @@ struct CommentView: View {
             VStack {
                 if let post = viewModel.currentPost {
                     if post.comments.isEmpty {
+                        Spacer()
                         Text("No Comments Yet")
                             .navigationTitle("Comments")
                             .navigationBarTitleDisplayMode(.inline)
+                        Spacer()
                     } else {
                         VStack {
                             List {

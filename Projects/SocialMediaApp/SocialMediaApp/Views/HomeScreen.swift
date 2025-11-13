@@ -110,13 +110,4 @@ struct HomeScreen: View {
 }
 
 //MARK: MockPosts
-var mockPosts: [Post] = [
-    Post(picture: "Picture1", user: User.user, likes: 40, comments: []),
-    Post(picture: "Picture2", user: User.user, likes: 20, comments: []),
-    Post(picture: "Picture3", user: User.user, likes: 32, comments: [
-        Comment(user: User.user, content: "Lame"),
-        Comment(user: User.user, content: "WOw"),
-        Comment(user: User.user, content: "No Way!"),
-        Comment(user: User.user, content: "HI")
-    ])
-]
+
