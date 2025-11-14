@@ -109,7 +109,7 @@ struct HomeScreen: View {
 }
 
 #Preview {
-    HomeScreen(user: User(username: "masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService(), selectedPost: nil))
+    HomeScreen(user: User(firstName: "HAHA", lastName: "HAHA", username: "masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService(), selectedPost: nil))
 }
 
 //MARK: MockPosts

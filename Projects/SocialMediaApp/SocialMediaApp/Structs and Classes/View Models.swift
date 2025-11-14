@@ -60,6 +60,7 @@ class HomeScreenViewModel {
 
 @Observable
 class CommentViewModel {
+    //Every viewModel links back to the HomeScreenViewModel where the apiService is initialized
     var homeViewModel: HomeScreenViewModel
     var postID: UUID
     var content: String = ""
@@ -103,4 +104,32 @@ class ProfileViewModel {
         self.homeViewModel = homeViewModel
         self.user = user
     }
+}
+
+@Observable
+class EditProfileViewModel {
+    var homeViewModel: HomeScreenViewModel
+    var user: User
+    var newUsername = ""
+    var newBio = ""
+    var newInterests: [String] = []
+
+    init(homeViewModel: HomeScreenViewModel, user: User) {
+        self.homeViewModel = homeViewModel
+        self.user = user
+    }
+
+    func saveChanges() {
+        user.username = newUsername
+        
+    }
+    //Unaware how the background photos will be recieved, so not adding a way to edit the profile picture yet.
+    
+    /*
+     var username: String
+     var profilePicture: String?
+     var backgroundProfilePicture: String?
+     var bio: String?
+     var interests: [String] = []
+     */
 }

@@ -13,14 +13,16 @@ import Observation
 
 struct User: Codable, Identifiable {
     var id = UUID()
-    let username: String
+    let firstName: String
+    let lastName: String
+    var username: String
     var profilePicture: String?
     var backgroundProfilePicture: String?
     var bio: String?
     var posts: [Post] = []
     var interests: [String] = []
     
-    static var user = User(username:"EWW", profilePicture: "Picture2", bio: nil)
+    static var user = User(firstName: "Joel", lastName: "SHALALAAL", username:"EWW", profilePicture: "Picture2", bio: nil)
 }
 
 struct Post: Codable, Identifiable {

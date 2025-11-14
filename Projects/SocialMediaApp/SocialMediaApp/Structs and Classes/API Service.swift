@@ -35,6 +35,6 @@ class MockAPIService: APIService {
     }
     
     func fetchUserData() async throws -> User {
-        return User(username: "Masimo Stephenson", profilePicture: "Picture1", backgroundProfilePicture: "Picture3", bio: "WHS 2026", interests: ["iOS Development", "Hiking", "Charcuterie Boards"])
+        return User(firstName: "Masimo", lastName: "Stephenson", username: "Masimo Stephenson", profilePicture: "Picture1", backgroundProfilePicture: "Picture3", bio: "WHS 2026", interests: ["iOS Development", "Hiking", "Charcuterie Boards"])
     }
 }
