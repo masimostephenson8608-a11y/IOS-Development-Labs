@@ -36,9 +36,11 @@ struct CommentView: View {
                                 ForEach(post.comments) { comment in
                                     Section {
                                         HStack {
-                                            if let profilePicture = user.profilePicture {
+                                            if let profilePicture = comment.user.profilePicture {
                                                 Image(profilePicture)
-                                                    .padding(.trailing, 15)
+                                                    .resizable()
+                                                    .frame(width: 25, height: 25)
+                                                    .clipShape(.circle)
                                             } else {
                                                 Image(systemName: "person.circle.fill")
                                                     .resizable()
@@ -46,7 +48,7 @@ struct CommentView: View {
                                                     .padding(.trailing, 15)
                                                 
                                             }
-                                            Text(user.username).font(.title2)
+                                            Text(comment.user.username).font(.title2)
                                         }
                                         Text("\(comment.content)").font(.title3)
                                     }

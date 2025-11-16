@@ -21,7 +21,7 @@ struct MainTabView: View {
                 }
                 
                 Tab () {
-                    ProfileView(viewModel: ProfileViewModel(homeViewModel: homeViewModel, user: user))
+                    ProfileView(viewModel: ProfileViewModel(homeViewModel: homeViewModel))
                 } label: {
                     Image(systemName: "person.circle.fill")
                     Text("Profile")

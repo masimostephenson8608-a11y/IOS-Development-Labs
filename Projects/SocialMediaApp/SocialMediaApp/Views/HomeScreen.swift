@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeScreen: View {
     @State var viewModel: HomeScreenViewModel // MAKE INSTANCE OF HomeScreenViewModel
     let user: User
+    @State var newPost = false
     
     init(user: User, viewModel: HomeScreenViewModel) {   // Initailizer for the user and the STATE of the viewModel
         self._viewModel = State(wrappedValue: viewModel)
@@ -99,6 +100,16 @@ struct HomeScreen: View {
             }
             .navigationTitle("For You Page")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                Button {
+                    newPost.toggle()
+                } label: {
+                    Text("+")
+                }
+            }
+            .sheet(isPresented: $newPost) {
+                NewPostView(viewModel: NewPostViewModel(homeViewModel: viewModel))
+            }
         }
         .onAppear() {
             Task {

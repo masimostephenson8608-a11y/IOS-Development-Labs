@@ -21,7 +21,7 @@ struct ProfileView: View {
                     startRadius: 1000,
                     endRadius: 150
                 ).ignoresSafeArea()
-                if let image = viewModel.user.backgroundProfilePicture {
+                if let image = viewModel.homeViewModel.user?.backgroundProfilePicture {
                     VStack {
                         Image(image)
                             .resizable()
@@ -34,7 +34,7 @@ struct ProfileView: View {
                     Spacer()
                     HStack {
 
-                        if let profilePhoto = viewModel.user.profilePicture {
+                        if let profilePhoto = viewModel.homeViewModel.user?.profilePicture {
                             VStack {
                                 HStack {
                                     Spacer()
@@ -44,7 +44,7 @@ struct ProfileView: View {
                                         .clipShape(.circle)
                                         .padding(.horizontal, 10)
                                     Spacer()
-                                    Text(viewModel.user.username)
+                                    Text(viewModel.homeViewModel.user?.username ?? "Not found")
                                         .font(.title2.bold())
                                         .foregroundStyle(.secondary)
                                     Spacer()
@@ -52,7 +52,7 @@ struct ProfileView: View {
                                 }
                                 .padding(.vertical, 15)
                                 Text(
-                                    "\(viewModel.user.firstName) \(viewModel.user.lastName)"
+                                    "\(viewModel.homeViewModel.user?.firstName ?? "Not Found") \(viewModel.homeViewModel.user?.lastName ?? "Not found")"
                                 )
                             }
                             .padding(20)
@@ -66,7 +66,7 @@ struct ProfileView: View {
                                         .frame(width: 100, height: 100)
                                         .padding(.trailing, 15)
 
-                                    Text(viewModel.user.username)
+                                    Text(viewModel.homeViewModel.user?.username ?? "Not found")
                                         .font(.title2.bold())
                                         .foregroundStyle(.secondary)
                                         .padding(.trailing, 40)
@@ -83,7 +83,7 @@ struct ProfileView: View {
                     Spacer()
 
                     HStack {
-                        if let bio = viewModel.user.bio {
+                        if let bio = viewModel.homeViewModel.user?.bio {
                             VStack {
                                 Text("Bio:")
                                     .font(.largeTitle.bold())
@@ -104,28 +104,30 @@ struct ProfileView: View {
                         Spacer()
 
                         VStack {
-                            if !viewModel.user.interests.isEmpty {
-                                Text("Interests:")
-                                    .font(.largeTitle.bold())
-                                    .foregroundStyle(.white)
-                                    .padding(20)
-
-                                ForEach(viewModel.user.interests, id: \.self) {
-                                    text in
-                                    Text("\(text)").font(.title2)
-                                        .foregroundStyle(.white.secondary)
+                            if let interests = viewModel.homeViewModel.user?.interests {
+                                if !interests.isEmpty {
+                                    Text("Interests:")
+                                        .font(.largeTitle.bold())
+                                        .foregroundStyle(.white)
+                                        .padding(20)
+                                    
+                                    ForEach(viewModel.homeViewModel.user?.interests ?? [""], id: \.self) {
+                                        text in
+                                        Text("\(text)").font(.title2)
+                                            .foregroundStyle(.white.secondary)
+                                    }
+                                } else {
+                                    Text("No Interests")
+                                        .font(.largeTitle.bold())
+                                        .foregroundStyle(.white)
+                                        .padding(20)
                                 }
-                            } else {
-                                Text("No Interests")
-                                    .font(.largeTitle.bold())
-                                    .foregroundStyle(.white)
-                                    .padding(20)
                             }
                         }
 
                     }
 
-                    if !viewModel.user.posts.isEmpty {
+                    if !(viewModel.homeViewModel.user?.posts ?? []).isEmpty {
                         ScrollView {
                             LazyVStack {
                                 ForEach(viewModel.posts) { post in
@@ -198,7 +200,7 @@ struct ProfileView: View {
                                     item: $viewModel.homeViewModel.selectedPost
                                 ) { post in  // Making the sheet view for the Comments View
                                     CommentView(
-                                        user: viewModel.user,
+                                        user: viewModel.homeViewModel.user ?? User(firstName: "", lastName: "", username: ""),
                                         viewModel: CommentViewModel(
                                             homeViewModel: viewModel
                                                 .homeViewModel,
@@ -218,8 +220,8 @@ struct ProfileView: View {
                 EditProfileView(
                     viewModel: EditProfileViewModel(
                         homeViewModel: viewModel.homeViewModel,
-                        user: viewModel.user
                     ),
+                    user: viewModel.homeViewModel.user ?? User(firstName: "", lastName: "", username: ""),
                     refreshCounter: refreshCounter
                 )
             }

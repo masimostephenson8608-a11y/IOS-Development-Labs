@@ -85,7 +85,6 @@ class CommentViewModel {
 @Observable
 class ProfileViewModel {
     var homeViewModel: HomeScreenViewModel
-    let user: User
     var posts: [Post] {
         var userPosts: [Post] = []
         Task {
@@ -93,35 +92,33 @@ class ProfileViewModel {
         }
         
         for post in userPosts {
-            if post.user.id == user.id {
+            if post.user.id == homeViewModel.user?.id {
                 userPosts.append(post)
             }
         }
         return userPosts
     }
     
-    init(homeViewModel: HomeScreenViewModel, user: User) {
+    init(homeViewModel: HomeScreenViewModel) {
         self.homeViewModel = homeViewModel
-        self.user = user
     }
 }
 
 @Observable
 class EditProfileViewModel {
     var homeViewModel: HomeScreenViewModel
-    var user: User
     var newUsername = ""
     var newBio = ""
     var newInterests: [String] = []
 
-    init(homeViewModel: HomeScreenViewModel, user: User) {
+    init(homeViewModel: HomeScreenViewModel) {
         self.homeViewModel = homeViewModel
-        self.user = user
     }
 
     func saveChanges() {
-        user.username = newUsername
-        
+        homeViewModel.user?.username = newUsername
+        homeViewModel.user?.bio = newBio
+        homeViewModel.user?.interests = newInterests
     }
     //Unaware how the background photos will be recieved, so not adding a way to edit the profile picture yet.
     
@@ -132,4 +129,21 @@ class EditProfileViewModel {
      var bio: String?
      var interests: [String] = []
      */
+}
+
+@Observable
+class NewPostViewModel {
+    var homeViewModel: HomeScreenViewModel
+    var picture: String = ""
+    
+    init(homeViewModel: HomeScreenViewModel) {
+        self.homeViewModel = homeViewModel
+    }
+    
+    func makeNewPost() {
+        if let user = homeViewModel.user {
+            homeViewModel.posts.append(Post(picture: picture, user: user, likes: 0, comments: []))
+        }
+        picture = ""
+    }
 }
