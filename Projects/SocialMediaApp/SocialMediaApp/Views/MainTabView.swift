@@ -12,7 +12,7 @@ struct MainTabView: View {
 
     var body: some View {
         TabView {           // TAB VIEW FOR HOME SCREEN AND PROFILE SCREEN
-            if var user = homeViewModel.user {
+            if let user = homeViewModel.user {
                 Tab() {
                     HomeScreen(user: user, viewModel: homeViewModel )
                 } label: {

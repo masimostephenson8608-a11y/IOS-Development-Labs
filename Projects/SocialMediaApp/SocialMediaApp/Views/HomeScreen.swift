@@ -112,8 +112,10 @@ struct HomeScreen: View {
             }
         }
         .onAppear() {
-            Task {
-                try await viewModel.fetchPosts()  // MARK: Fetch Posts
+            if viewModel.posts.isEmpty {
+                Task {
+                    try await viewModel.fetchPosts()  // MARK: Fetch Posts
+                }
             }
         }
     }

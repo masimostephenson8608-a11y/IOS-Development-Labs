@@ -21,224 +21,247 @@ struct ProfileView: View {
                     startRadius: 1000,
                     endRadius: 150
                 ).ignoresSafeArea()
-                if let image = viewModel.homeViewModel.user?.backgroundProfilePicture {
+                ScrollView {
                     VStack {
-                        Image(image)
-                            .resizable()
-                            .frame(height: 450)
-                            .ignoresSafeArea()
-                        Spacer()
-                    }
-                }
-                VStack {
-                    Spacer()
-                    HStack {
-
-                        if let profilePhoto = viewModel.homeViewModel.user?.profilePicture {
-                            VStack {
-                                HStack {
-                                    Spacer()
-                                    Image(profilePhoto)
+                        ZStack {
+                            if let image = viewModel.homeViewModel.user?
+                                .backgroundProfilePicture
+                            {
+                                VStack {
+                                    Image(image)
                                         .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(.circle)
-                                        .padding(.horizontal, 10)
-                                    Spacer()
-                                    Text(viewModel.homeViewModel.user?.username ?? "Not found")
-                                        .font(.title2.bold())
-                                        .foregroundStyle(.secondary)
-                                    Spacer()
-
+                                        .frame(height: 450)
+                                        .ignoresSafeArea()
                                 }
-                                .padding(.vertical, 15)
-                                Text(
-                                    "\(viewModel.homeViewModel.user?.firstName ?? "Not Found") \(viewModel.homeViewModel.user?.lastName ?? "Not found")"
-                                )
                             }
-                            .padding(20)
-                            .glassEffect(in: RoundedRectangle(cornerRadius: 25))
-                        } else {
                             VStack {
+                                //                                    Spacer()
                                 HStack {
-                                    Spacer()
-                                    Image(systemName: "person.circle.fill")
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .padding(.trailing, 15)
 
-                                    Text(viewModel.homeViewModel.user?.username ?? "Not found")
-                                        .font(.title2.bold())
-                                        .foregroundStyle(.secondary)
-                                        .padding(.trailing, 40)
-                                    Spacer()
-                                }
-                                .padding(.vertical, 15)
-                            }
-                            .padding(20)
-                            .glassEffect(in: RoundedRectangle(cornerRadius: 25))
-                        }
-                    }
-                    .padding(20)
-
-                    Spacer()
-
-                    HStack {
-                        if let bio = viewModel.homeViewModel.user?.bio {
-                            VStack {
-                                Text("Bio:")
-                                    .font(.largeTitle.bold())
-                                    .foregroundStyle(.white)
-                                    .padding(20)
-
-                                Text("\(bio)")
-                                    .foregroundStyle(.white.secondary)
-                            }
-                        } else {
-                            Spacer()
-                            Text("No Bio")
-                                .font(.custom("Roboto", size: 50))
-                                .foregroundStyle(.white)
-                                .padding(20)
-                        }
-
-                        Spacer()
-
-                        VStack {
-                            if let interests = viewModel.homeViewModel.user?.interests {
-                                if !interests.isEmpty {
-                                    Text("Interests:")
-                                        .font(.largeTitle.bold())
-                                        .foregroundStyle(.white)
-                                        .padding(20)
-                                    
-                                    ForEach(viewModel.homeViewModel.user?.interests ?? [""], id: \.self) {
-                                        text in
-                                        Text("\(text)").font(.title2)
-                                            .foregroundStyle(.white.secondary)
-                                    }
-                                } else {
-                                    Text("No Interests")
-                                        .font(.largeTitle.bold())
-                                        .foregroundStyle(.white)
-                                        .padding(20)
-                                }
-                            }
-                        }
-
-                    }
-
-                    if !(viewModel.homeViewModel.user?.posts ?? []).isEmpty {
-                        ScrollView {
-                            LazyVStack {
-                                ForEach(viewModel.posts) { post in
-                                    ZStack {
+                                    if let profilePhoto = viewModel
+                                        .homeViewModel.user?
+                                        .profilePicture
+                                    {
                                         VStack {
-                                            Spacer()
-                                            if let photo = post.picture {
-                                                Image(photo).resizable()
-                                                    .scaledToFit()
-                                            }
                                             HStack {
                                                 Spacer()
-                                                Button {  // Button for liking posts
-                                                    Task {
-                                                        try await viewModel
-                                                            .homeViewModel
-                                                            .clickLike(
-                                                                post: post
-                                                            )
-                                                    }
-                                                } label: {
-                                                    if post.liked == true {
-                                                        Image(
-                                                            systemName:
-                                                                "heart.fill"
-                                                        )
-                                                    } else {
-                                                        Image(
-                                                            systemName: "heart"
-                                                        )
-                                                    }
-                                                }
-                                                .frame(width: 35, height: 35)
-                                                .glassEffect()
-                                                Text("\(post.likes)")
-                                                    .foregroundStyle(
-                                                        .white.secondary
+                                                Image(profilePhoto)
+                                                    .resizable()
+                                                    .frame(
+                                                        width: 100,
+                                                        height: 100
                                                     )
+                                                    .clipShape(.circle)
+                                                    .padding(.horizontal, 10)
                                                 Spacer()
-                                                Button {
+                                                Text(
                                                     viewModel.homeViewModel
-                                                        .selectedPost = post
-                                                } label: {
-                                                    Image(systemName: "bubble")
-                                                }
-                                                .frame(width: 45, height: 45)
-                                                .glassEffect()
-                                                Text("\(post.comments.count)")
-                                                    .foregroundStyle(
-                                                        .white.secondary
-                                                    )
+                                                        .user?
+                                                        .username ?? "Not found"
+                                                )
+                                                .font(.title2.bold())
+                                                .foregroundStyle(.secondary)
+                                                Spacer()
+
+                                            }
+                                            .padding(.vertical, 15)
+                                            Text(
+                                                "\(viewModel.homeViewModel.user?.firstName ?? "Not Found") \(viewModel.homeViewModel.user?.lastName ?? "Not found")"
+                                            )
+                                        }
+                                        .padding(20)
+                                        .glassEffect(
+                                            in: RoundedRectangle(
+                                                cornerRadius: 25
+                                            )
+                                        )
+                                    } else {
+                                        VStack {
+                                            HStack {
+                                                Spacer()
+                                                Image(
+                                                    systemName:
+                                                        "person.circle.fill"
+                                                )
+                                                .resizable()
+                                                .frame(width: 100, height: 100)
+                                                .padding(.trailing, 15)
+
+                                                Text(
+                                                    viewModel.homeViewModel
+                                                        .user?
+                                                        .username ?? "Not found"
+                                                )
+                                                .font(.title2.bold())
+                                                .foregroundStyle(.secondary)
+                                                .padding(.trailing, 40)
                                                 Spacer()
                                             }
-                                            .font(.title)
-                                            Spacer()
-                                                .onAppear {
-                                                    print(post.comments)
-                                                }
+                                            .padding(.vertical, 15)
                                         }
-                                        .frame(
-                                            maxWidth: .infinity,
-                                            maxHeight: .infinity
+                                        .padding(20)
+                                        .glassEffect(
+                                            in: RoundedRectangle(
+                                                cornerRadius: 25
+                                            )
                                         )
-                                        .padding(10)
-                                    }.glassEffect(
-                                        in: RoundedRectangle(cornerRadius: 20)
-                                    ).padding(.horizontal, 20)
+                                    }
                                 }
-                                .sheet(
-                                    item: $viewModel.homeViewModel.selectedPost
-                                ) { post in  // Making the sheet view for the Comments View
-                                    CommentView(
-                                        user: viewModel.homeViewModel.user ?? User(firstName: "", lastName: "", username: ""),
-                                        viewModel: CommentViewModel(
-                                            homeViewModel: viewModel
-                                                .homeViewModel,
-                                            postID: post.id
-                                        )
-                                    )
-                                }
+                                .padding(20)
                             }
                         }
 
                         Spacer()
-                    }
-                }
-                .padding(.vertical, 50)
-            }
-            .sheet(isPresented: $editProfile) {
-                EditProfileView(
-                    viewModel: EditProfileViewModel(
-                        homeViewModel: viewModel.homeViewModel,
-                    ),
-                    user: viewModel.homeViewModel.user ?? User(firstName: "", lastName: "", username: ""),
-                    refreshCounter: refreshCounter
-                )
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        editProfile.toggle()
-                    } label: {
-                        Text("Edit")
-                    }
-                }
-            }
 
+                        HStack {
+                            if let bio = viewModel.homeViewModel.user?.bio {
+                                VStack {
+                                    Text("Bio:")
+                                        .font(.largeTitle.bold())
+                                        .foregroundStyle(.white)
+                                        .padding(20)
+
+                                    Text("\(bio)")
+                                        .foregroundStyle(.white.secondary)
+                                }
+                            } else {
+                                Spacer()
+                                Text("No Bio")
+                                    .font(.custom("Roboto", size: 50))
+                                    .foregroundStyle(.white)
+                                    .padding(20)
+                            }
+
+                            Spacer()
+
+                            VStack {
+                                if let interests = viewModel.homeViewModel.user?
+                                    .interests
+                                {
+                                    if !interests.isEmpty {
+                                        Text("Interests:")
+                                            .font(.largeTitle.bold())
+                                            .foregroundStyle(.white)
+                                            .padding(20)
+
+                                        ForEach(
+                                            viewModel.homeViewModel.user?
+                                                .interests ?? [""],
+                                            id: \.self
+                                        ) {
+                                            text in
+                                            Text("\(text)").font(.title2)
+                                                .foregroundStyle(
+                                                    .white.secondary
+                                                )
+                                        }
+                                    } else {
+                                        Text("No Interests")
+                                            .font(.largeTitle.bold())
+                                            .foregroundStyle(.white)
+                                            .padding(20)
+                                    }
+                                }
+                            }
+
+                        }
+
+                        Spacer()
+                    }
+                    Spacer(minLength: 100)
+                    ProfilePostView(viewModel: viewModel)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                Spacer()
+                .padding(.vertical, 50)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                .sheet(isPresented: $editProfile) {
+                    EditProfileView(
+                        viewModel: EditProfileViewModel(
+                            homeViewModel: viewModel.homeViewModel,
+                        ),
+                        user: viewModel.homeViewModel.user
+                            ?? User(firstName: "", lastName: "", username: ""),
+                        refreshCounter: refreshCounter
+                    )
+                }
+                .toolbar {
+                    ToolbarItem {
+                        Button {
+                            editProfile.toggle()
+                        } label: {
+                            Text("Edit")
+                        }
+                    }
+                }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(0)
+        .ignoresSafeArea()
     }
 }
 
+struct ProfilePostView: View {
+    var viewModel: ProfileViewModel
+    var body: some View {
+
+        if let post = viewModel.homeViewModel.posts.last(where: {
+            $0.user.id == viewModel.homeViewModel.user?.id
+        }) {
+            ZStack {
+                VStack {
+
+                    // Profile photo
+                    HStack {
+                        if let profilePhoto = post.user.profilePicture {
+                            Image(profilePhoto)
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .clipShape(.circle)
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                        }
+                        Text(post.user.username)
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+
+                    // Picture
+                    if let photo = post.picture {
+                        Image(photo)
+                            .resizable()
+                            .scaledToFit()
+                    }
+
+                    // Likes/comments
+                    HStack {
+                        Spacer()
+                        Image(systemName: "heart")
+                        Text("\(post.likes)")
+                            .foregroundStyle(.white.secondary)
+                        Spacer()
+                        Image(systemName: "bubble")
+                        Text("\(post.comments.count)")
+                            .foregroundStyle(.white.secondary)
+                        Spacer()
+                    }
+                    .font(.title)
+
+                    Spacer()
+                }
+                .padding(10)
+            }
+            .glassEffect(in: RoundedRectangle(cornerRadius: 20))
+            .padding(.horizontal, 20)
+        } else {
+            Text("No Posts")
+                .font(.largeTitle.bold()).foregroundStyle(.white)
+        }
+    }
+}
 /*
 
  }
