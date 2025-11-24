@@ -14,8 +14,13 @@ struct DogDetailsView: View {
     
     var body: some View {
         if let url = URL(string: dog.message) {
-            AsyncImage(url: url)
-                .frame(maxWidth: 500, maxHeight: 500)
+            AsyncImage(url: url) {image in
+                image
+                    .image?.resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 300, maxHeight: 300)
+            }
+
         } else {
             Text("No Image Found")
                 .font(.largeTitle)
