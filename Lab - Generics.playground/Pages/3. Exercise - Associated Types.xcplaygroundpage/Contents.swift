@@ -28,11 +28,33 @@ struct ArtToolbox: Toolbox {
 }
 
 //:  Create another struct, `WatchmakersToolbox` that conforms to `Toolbox`. Use an explicit `typealias` declaration to specify the type for `Tool`.
-
+struct WatchMakersToolbox {
+    typealias tool = WatchmakerTools
+}
 
 //:  Create another protocl, `DeliveryService`. Give it the associatedtype `Parcel` and a function `deliver(parcel: Parcel`). Create two more structs, `FoodCourier` and `MailCourier` that conform to `DeliveryService`, with reasonable associated types.
+protocol DeliveryService {
+    associatedtype Parcel
+    
+    func deliver(parcel: Parcel)
+}
 
+struct FoodCourier: DeliveryService {
+    typealias Parcel = String
+    
+    func deliver(parcel: Parcel) {
+        print(parcel)
+    }
+}
 
+struct MailCourier: DeliveryService {
+    typealias Parcel = String
+    
+    func deliver(parcel: Parcel) {
+        print(parcel)
+    }
+
+}
 /*:
 [Previous](@previous)  |  page 3 of 4  |  [Next: App Exercise - Workout API](@next)
  */
