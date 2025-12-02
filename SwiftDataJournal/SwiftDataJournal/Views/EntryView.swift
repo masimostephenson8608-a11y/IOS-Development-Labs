@@ -6,13 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EntryView: View {
     var entry: JournalEntry
+    @State var newName: String = ""
+    @State var newText: String = ""
+    
+    @Environment(\.modelContext) var context
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
-            Text("\(entry.name)")
+            TextField(text: $newName) {
+                Text("\(entry.name)")
+                    .foregroundStyle(.black)
+            }
                 .font(.largeTitle)
                 .padding(25)
             Divider()
@@ -21,12 +30,38 @@ struct EntryView: View {
                 .font(.caption)
                 .padding(10)
             Divider()
-            Text("\(entry.text)")
+            TextField(text: $newText) {
+                Text("\(entry.text)")
+                    .foregroundStyle(.black)
+            }
                 .font(.title)
                 .lineLimit(10)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(25)
             Spacer()
+            
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Save") {
+                            saveNewEntry()
+                            dismiss()
+                        }
+                    }
+                }
         }.padding(.horizontal, 25)
     }
+    func saveNewEntry() {
+        if !newName.isEmpty {
+            entry.name = newName
+        }
+        if !newText.isEmpty {
+            entry.text = newText
+        }
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save the context within the Entry View")
+        }
+    }
+
 }
