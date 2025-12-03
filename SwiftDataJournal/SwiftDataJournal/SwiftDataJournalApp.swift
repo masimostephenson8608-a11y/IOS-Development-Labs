@@ -12,8 +12,8 @@ import SwiftData
 struct SwiftDataJournalApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreen()
+            JournalsView()
         }
-        .modelContainer(for: JournalEntry.self)
+        .modelContainer(for: Journal.self)
     }
 }

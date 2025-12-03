@@ -1,52 +1,57 @@
 //
-//  ContentView.swift
+//  JournalsView.swift
 //  SwiftDataJournal
 //
-//  Created by Masimo Stephenson on 12/2/25.
+//  Created by Masimo Stephenson on 12/3/25.
 //
 
 import SwiftUI
 import SwiftData
 
-struct HomeScreen: View {
-    @Query(sort: \JournalEntry.createdAt, order: .reverse)
-    private var journalEntries: [JournalEntry]
+struct JournalsView: View {
+    @Query(sort: \Journal.createdAt, order: .reverse)
+    private var journals: [Journal]
     @Environment(\.modelContext) var context
     
     var body: some View {
         NavigationStack {
-            List(journalEntries, id: \.id) { entry in
+            List(journals, id: \.id) { journal in
                 NavigationLink {
-                    EntryView(entry: entry)
+                    JournalEntriesView(journal: journal)
                 } label: {
                     VStack {
-                        Text("\(entry.name)")
+                        Text("\(journal.name)")
                             .font(.title.bold())
-                        Text(entry.createdAt, format: Date.FormatStyle(date: .numeric, time: .shortened))
+                        Text(journal.createdAt, format: Date.FormatStyle(date: .numeric, time: .shortened))
                             .font(.footnote)
                     }
                 }.swipeActions(edge: .trailing) {
                     Button("Delete") {
-                        delete(entry: entry)
+                        delete(journal: journal)
                     }.tint(.red)
                 }
             }
-            .navigationTitle("Journal Entries")
+            .navigationTitle("Journals")
             .navigationBarTitleDisplayMode(.large)
             
             
             .toolbar {
                 ToolbarItem() {
                     NavigationLink("Add") {
-                        AddEntryView()
+                        AddJournalView()
+                            .interactiveDismissDisabled()
                     }
                 }
             }
         }
     }
     
-        
-    func delete(entry: JournalEntry) {
-        context.delete(entry)
+    
+    func delete(journal: Journal) {
+        context.delete(journal)
     }
+}
+
+#Preview {
+    JournalsView()
 }

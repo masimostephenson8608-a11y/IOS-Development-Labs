@@ -14,6 +14,7 @@ class JournalEntry {
     var name: String
     var text: String
     var createdAt: Date
+    var journal: Journal?
     
     init(name: String, text: String, createdAt: Date = .now) {
         self.name = name

@@ -1,58 +1,45 @@
 //
-//  AddEntryView.swift
+//  AddJournalView.swift
 //  SwiftDataJournal
 //
-//  Created by Masimo Stephenson on 12/2/25.
+//  Created by Masimo Stephenson on 12/3/25.
 //
 
 import SwiftUI
 import SwiftData
 
-struct AddEntryView: View {
-    var journal: Journal
-    @State var entryName: String = ""
-    @State var entryText: String = ""
+struct AddJournalView: View {
+    @State var journalName: String = ""
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var context
 
     var body: some View {
         NavigationStack {
-            /*
-             id: String
-             text: String
-             createdAt: Date
-             */
             List() {
-                Section("Entry Name") {
-                    TextField("", text: $entryName)
+                Section("Journal Name") {
+                    TextField("", text: $journalName)
                         .padding(.vertical, 10)
                         .font(.title)
                 }
-                
-                Section("Entry Text") {
-                    TextField("", text: $entryText)
-                        .padding(.vertical, 20)
-                        .font(.title2)
-                }
+            
             }
             .lineSpacing(100)
             
-            .navigationTitle("New Entry")
+            .navigationTitle("New Journal")
             .navigationBarTitleDisplayMode(.inline)
             
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Back") {
-                        entryName = ""
-                        entryText = ""
+                        journalName = ""
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        saveNewEntry()
+                        saveNewJournal()
                         dismiss()
                     }
                 }
@@ -61,18 +48,19 @@ struct AddEntryView: View {
         }
     }
     
-    func saveNewEntry() {
-        let newEntry = JournalEntry(name: entryName, text: entryText)
-        newEntry.journal = journal
-        journal.entries.append(newEntry)
-        context.insert(newEntry)
+    func saveNewJournal() {
+            context.insert(Journal(name: journalName, entries: []))
             do {
                 try context.save()
             } catch {
                 print("Couldn't Save Context, message coming from the SaveNewEntry function")
             }
-            entryName = ""
-            entryText = ""
+            journalName = ""
     }
 
+}
+
+
+#Preview {
+    AddJournalView()
 }
