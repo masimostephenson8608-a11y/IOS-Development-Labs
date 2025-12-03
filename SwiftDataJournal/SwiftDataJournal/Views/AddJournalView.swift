@@ -59,8 +59,3 @@ struct AddJournalView: View {
     }
 
 }
-
-
-#Preview {
-    AddJournalView()
-}
