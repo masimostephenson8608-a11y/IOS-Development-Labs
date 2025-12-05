@@ -11,14 +11,21 @@ struct DragonListView: View {
     @Environment(DragonRouter.self) var router
     let dragons: [Dragon]
     var body: some View {
-        NavigationStack {
-            List(dragons) { dragon in
-                Section {
-                    Button {
-                        router.navigateTo(route: .dragonDetail(dragon: dragon))
-                    } label: {
-                        Text(dragon.name)
-                        Text(dragon.species)
+        List(dragons) { dragon in
+            Section {
+                HStack {
+                    NavigationLink(value: DragonRouter.Route.dragonDetail(dragon: dragon)) {
+                        HStack {
+                            Spacer()
+                            VStack {
+                                Text(dragon.name)
+                                    .foregroundStyle(.black)
+                                    .bold()
+                                Text(dragon.species)
+                                    .foregroundStyle(.black.secondary)
+                            }
+                            Spacer()
+                        }
                     }
                 }
             }
