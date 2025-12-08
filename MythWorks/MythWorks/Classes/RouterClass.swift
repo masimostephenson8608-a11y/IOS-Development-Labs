@@ -17,6 +17,10 @@ class DragonRouter {
         case dragonDetail(dragon: Dragon)
         
         case dragonList(dragons: [Dragon])
+        
+        case abilities(dragon: Dragon)
+        
+        case settings
     }
     
     @ViewBuilder
@@ -27,6 +31,15 @@ class DragonRouter {
             
         case .dragonList(dragons: let dragons):
             DragonListView(dragons: dragons)
+            
+        case .abilities(dragon: let dragon):
+            AbilitiesView(dragon: dragon)
+            
+        case .settings:
+            SettingsView()
+            
+        default:
+                HomeScreen()
         }
     }
     

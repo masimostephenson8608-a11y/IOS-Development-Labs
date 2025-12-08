@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeScreen: View {
     @State var router = DragonRouter()
+    @State var settingsViewModel = SettingsViewModel()
     let dragons = Dragon.dragons
     var body: some View {
         NavigationStack(path: $router.navigationPath) {
@@ -18,6 +19,7 @@ struct HomeScreen: View {
                 }
         }
         .environment(router)
+        .environment(settingsViewModel)
     }
 }
 
