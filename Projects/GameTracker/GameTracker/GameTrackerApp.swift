@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct GameTrackerApp: App {
-    @State var gameInfo = GameInfo(games: [])
     var body: some Scene {
         WindowGroup {
             HomeScreen()
-        }.environment(gameInfo)
+        }.modelContainer(for: Game.self)
     }
 }

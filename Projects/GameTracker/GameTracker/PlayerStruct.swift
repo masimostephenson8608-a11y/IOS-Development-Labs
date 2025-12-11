@@ -6,10 +6,23 @@
 //
 
 import Foundation
+import SwiftUI
+import SwiftData
 
-struct Player: Hashable, Identifiable {
-    let id = UUID()
-    let name: String
-    let icon: String
+@Model
+class Player: Identifiable {
+    var id = UUID()
+    var name: String
+    
+    var color: String
+    
     var points: Int
+    var game: Game?
+    
+    init(id: UUID = UUID(), name: String, color: String, points: Int) {
+        self.id = id
+        self.name = name
+        self.color = color
+        self.points = points
+    }
 }

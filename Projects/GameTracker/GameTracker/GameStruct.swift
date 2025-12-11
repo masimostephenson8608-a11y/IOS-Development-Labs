@@ -6,11 +6,14 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Game: Hashable, Identifiable {
-    let id = UUID()
-    let icon: String
-    let title: String
+@Model
+class Game: Identifiable {
+    var id = UUID()
+    var icon: String
+    var title: String
+    @Relationship(deleteRule: .cascade, inverse: \Player.game)
     var players: [Player]
     var sortBy: SortBy
     var winBy: SortBy
@@ -34,8 +37,17 @@ struct Game: Hashable, Identifiable {
             }
             return players.first ?? nil
         }
+    
+    init(id: UUID = UUID(), icon: String, title: String, players: [Player], sortBy: SortBy, winBy: SortBy) {
+        self.id = id
+        self.icon = icon
+        self.title = title
+        self.players = players
+        self.sortBy = sortBy
+        self.winBy = winBy
+    }
 
-    enum SortBy: String {
+    enum SortBy: String, Codable {
         case highest, lowest
     }
 }
