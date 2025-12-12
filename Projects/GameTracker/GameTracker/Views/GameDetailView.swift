@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct GameDetailView: View {
     @Bindable var game: Game
     @State var sortBy: Game.SortBy = .highest
     @State var winBy: Game.SortBy = .highest
-        
+    @State var playerName = ""
+    @State var playerColor = ""
+    @Environment(\.modelContext) var context
+            
     var playersSorted: [Player] {
         if game.sortBy == .highest {
             return game.players.sorted(by: { $0.points > $1.points })
@@ -46,10 +50,11 @@ struct GameDetailView: View {
         }.pickerStyle(.segmented)
             .frame(width: 150)
         
-        List(playersSorted, id: \.id) {player in
+        List(playersSorted, id: \.id) { player in
             HStack {
                 Image(systemName: "person.fill")
                     .padding(10)
+                    .foregroundStyle(getColor(color: player.color))
                 Text(player.name)
                     .padding(10)
 
@@ -60,10 +65,62 @@ struct GameDetailView: View {
                         player.points -= 1
                     }
                 })
+            }.swipeActions {
+                Button("Delete") {
+                    deletePlayer(player: player)
+                }
+                .tint(.red)
             }
         }
+        
+        HStack {
+            Spacer()
+            Image(systemName: "person.fill")
+                .foregroundStyle(getColor(color: playerColor))
+            TextField("Player Name", text: $playerName)
+                .frame(maxWidth: 150)
+            Picker("Color", selection: $playerColor) {
+                Text("Red")
+                    .tag("red")
+                Text("Green")
+                    .tag("green")
+                Text("Black")
+                    .tag("black")
+            }
+            Spacer()
+        }
+        
+        Button("Save Player") {
+            savePlayer()
+        }
+        
     }
-    func getPoints(player: Player) -> Int {
-        player.points
+        
+    func getColor(color: String) -> Color {
+        switch color {
+        case "red":
+            return Color.red
+        case "green":
+            return Color.green
+        case "black":
+            return Color.black
+        default:
+            return Color.black
+        }
+    }
+    
+    func savePlayer() {
+        if !playerName.isEmpty {
+            game.players.append(Player(name: playerName, color: playerColor, points: 0))
+        }
+        playerName = ""
+        playerColor = ""
+    }
+    
+    func deletePlayer(player: Player) {
+        let index = game.players.firstIndex(where: { $0.id == player.id })
+        if let index = index {
+            game.players.remove(at: index)
+        }
     }
 }

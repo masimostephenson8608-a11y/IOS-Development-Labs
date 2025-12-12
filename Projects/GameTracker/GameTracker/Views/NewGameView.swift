@@ -8,11 +8,11 @@
 import SwiftUI
 import SwiftData
 
-enum customColor: String {
-    case red
-    case black
-    case green
-}
+//enum customColor: String {
+//    case red
+//    case black
+//    case green
+//}
 
 struct NewGameView: View {
     @Environment(\.dismiss) var dismiss
@@ -34,6 +34,7 @@ struct NewGameView: View {
             return Color.black
         }
     }
+    var initialOrderIndex: Int
         
     @State var gameIcon: String = Icon.gameController.rawValue
     @Environment(\.modelContext) var context
@@ -125,7 +126,7 @@ struct NewGameView: View {
                 ToolbarItem() {
                     Button("Save") {
                         if !title.isEmpty && !players.isEmpty {
-                            let newGame = Game(icon: gameIcon, title: title, players: players, sortBy: sortedBy, winBy: whoWins)
+                            let newGame = Game(icon: gameIcon, title: title, players: players, sortBy: sortedBy, winBy: whoWins, orderIndex: initialOrderIndex)
                             context.insert(newGame)
                             dismiss()
                         }

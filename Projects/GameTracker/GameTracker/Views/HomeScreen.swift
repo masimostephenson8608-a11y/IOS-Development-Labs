@@ -9,45 +9,51 @@ import SwiftUI
 import SwiftData
 
 struct HomeScreen: View {
-//    @Environment(GameInfo.self) var gameInfo
-    @Query var games: [Game]
+    @Query(sort: [SortDescriptor(\Game.orderIndex)]) var games: [Game]
     @Environment(\.modelContext) var context
     
     var body: some View {
         NavigationStack {
-            List(games, id: \.id) { game in
-                NavigationLink {
-                    GameDetailView(game: game)
-                } label: {
-                    HStack {
-                        Image(systemName: game.icon)
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                        VStack {
-                            Text(game.title)
-                                .font(.title.bold())
-                            HStack {
-                                Text("Winning: ")
-                                    .font(.title3)
-                                    .foregroundStyle(.secondary)
-                                Text("\(game.winning?.name ?? "N/A")")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.black)
+            List {
+                ForEach(games, id: \.id) { game in
+                    NavigationLink {
+                        GameDetailView(game: game)
+                    } label: {
+                        HStack {
+                            Image(systemName: game.icon)
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                            VStack {
+                                Text(game.title)
+                                    .font(.title.bold())
+                                HStack {
+                                    Text("Winning: ")
+                                        .font(.title3)
+                                        .foregroundStyle(.secondary)
+                                    Text("\(game.winning?.name ?? "N/A")")
+                                        .font(.title3.bold())
+                                        .foregroundStyle(.black)
+                                }
                             }
+                            Spacer()
                         }
-                        Spacer()
+                        .padding(10)
                     }
-                    .padding(10)
-                }.swipeActions() {
-                    Button("Delete") {
-                        delete(game: game)
-                    }.tint(.red)
+                    .swipeActions() {
+                        Button("Delete") {
+                            delete(game: game)
+                        }.tint(.red)
+                    }
                 }
+                .onMove(perform: moveGames)
             }
             .toolbar {
                 ToolbarItem() {
+                    EditButton()
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink("+") {
-                        NewGameView()
+                        NewGameView(initialOrderIndex: games.count)
                     }
                 }
             }
@@ -57,4 +63,14 @@ struct HomeScreen: View {
     func delete(game: Game) {
         context.delete(game)
     }
+    
+    func moveGames(from source: IndexSet, to destination: Int) {
+            var revisedGames = games
+            
+            revisedGames.move(fromOffsets: source, toOffset: destination)
+            
+            for index in 0..<revisedGames.count {
+                revisedGames[index].orderIndex = index
+            }
+        }
 }

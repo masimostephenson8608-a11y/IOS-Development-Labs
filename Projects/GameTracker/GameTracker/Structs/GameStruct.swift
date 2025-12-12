@@ -17,6 +17,7 @@ class Game: Identifiable {
     var players: [Player]
     var sortBy: SortBy
     var winBy: SortBy
+    var orderIndex = 0
     var winning: Player? {
             var points: [Int] = []
             for player in players {
@@ -38,13 +39,14 @@ class Game: Identifiable {
             return players.first ?? nil
         }
     
-    init(id: UUID = UUID(), icon: String, title: String, players: [Player], sortBy: SortBy, winBy: SortBy) {
+    init(id: UUID = UUID(), icon: String, title: String, players: [Player], sortBy: SortBy, winBy: SortBy, orderIndex: Int) {
         self.id = id
         self.icon = icon
         self.title = title
         self.players = players
         self.sortBy = sortBy
         self.winBy = winBy
+        self.orderIndex = orderIndex
     }
 
     enum SortBy: String, Codable {
