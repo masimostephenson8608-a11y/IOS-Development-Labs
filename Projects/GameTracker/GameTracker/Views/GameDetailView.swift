@@ -38,8 +38,9 @@ struct GameDetailView: View {
                     Image(systemName: "chevron.left.circle.fill")
                         .font(.largeTitle)
                 }
-                .buttonStyle(.plain)
-                                                 
+                
+                Spacer()
+
                 Image(systemName: game.icon)
                     .resizable()
                     .frame(width: 50, height: 50)
@@ -112,9 +113,13 @@ struct GameDetailView: View {
             Button("Save Player") {
                 savePlayer()
             }
-            
+
             Spacer()
         }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
+        .ignoresSafeArea()
     }
     
     func getColor(color: String) -> Color {

@@ -21,48 +21,14 @@ struct HomeScreen: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(games, id: \.id) { game in
-                    Button {
-                        selectedGame = game
-                        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-                            selectedGame = game
-                            showingDetail = true
-                        }
-                    } label: {
-                        HStack {
-                            Image(systemName: game.icon)
-                                .resizable()
-                                .frame(width: 25, height: 25)
-                                .matchedGeometryEffect(
-                                    id: game.id,
-                                    in: nameSpace
-                                )
-                            VStack {
-                                Text(game.title)
-                                    .font(.title.bold())
-                                HStack {
-                                    Text("Winning: ")
-                                        .font(.title3)
-                                        .foregroundStyle(.secondary)
-                                    Text("\(game.winning?.name ?? "N/A")")
-                                        .font(.title3.bold())
-                                        .foregroundStyle(.black)
-                                }
-                            }
-                            Spacer()
-                        }
-                        .padding(10)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .swipeActions {
-                        Button("Delete") {
-                            delete(game: game)
-                        }.tint(.red)
-                    }
+            ZStack {
+                listView
+                
+                if let game = selectedGame, showingDetail {
+                    GameDetailView(game: game, nameSpace: nameSpace, showingDetail: $showingDetail)
+                        .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity))
+                        .zIndex(1)
                 }
-                .onMove(perform: moveGames)
             }
             .toolbar {
                 ToolbarItem {
@@ -73,18 +39,54 @@ struct HomeScreen: View {
                         NewGameView(initialOrderIndex: games.count)
                     }
                 }
-            }
+            }//.ignoresSafeArea()
+            .toolbarVisibility(showingDetail ? .hidden : .visible, for: .navigationBar)
         }
-        .ignoresSafeArea()
-        .fullScreenCover(item: $selectedGame) { game in
-            GameDetailView(
-                    game: game,
-                    nameSpace: nameSpace,
-                    showingDetail: Binding(
-                        get: { selectedGame != nil },
-                        set: { if !$0 { selectedGame = nil } }
-                    )
-                )
+    }
+    
+    var listView: some View {
+        List {
+            ForEach(games, id: \.id) { game in
+                Button {
+                    selectedGame = game
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                        selectedGame = game
+                        showingDetail = true
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: game.icon)
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .matchedGeometryEffect(
+                                id: game.id,
+                                in: nameSpace
+                            )
+                        VStack {
+                            Text(game.title)
+                                .font(.title.bold())
+                            HStack {
+                                Text("Winning: ")
+                                    .font(.title3)
+                                    .foregroundStyle(.secondary)
+                                Text("\(game.winning?.name ?? "N/A")")
+                                    .font(.title3.bold())
+                                    .foregroundStyle(.black)
+                            }
+                        }
+                        Spacer()
+                    }
+                    .padding(10)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .swipeActions {
+                    Button("Delete") {
+                        delete(game: game)
+                    }.tint(.red)
+                }
+            }
+            .onMove(perform: moveGames)
         }
     }
     func delete(game: Game) {
