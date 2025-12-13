@@ -15,6 +15,9 @@ struct GameDetailView: View {
     @State var playerName = ""
     @State var playerColor = ""
     @Environment(\.modelContext) var context
+    
+    let nameSpace: Namespace.ID
+    @Binding var showingDetail: Bool
             
     var playersSorted: [Player] {
         if game.sortBy == .highest {
@@ -25,77 +28,95 @@ struct GameDetailView: View {
         return game.players
     }
     var body: some View {
-        HStack {
-            Image(systemName: game.icon)
-                .resizable()
-                .frame(width: 50, height: 50)
-            Text(game.title)
-        }
-        Text("Sorted by: \(game.sortBy.rawValue)")
-        Picker("Sorted by:", selection: $game.sortBy) {
-            Text("Highest")
-                .tag(Game.SortBy.highest)
-            Text("Lowest")
-                .tag(Game.SortBy.lowest)
-        }.pickerStyle(.segmented)
-            .frame(width: 150)
-        
-        
-        Text("Player wins by: \(game.winBy.rawValue)")
-        Picker("Who wins:", selection: $game.winBy) {
-            Text("Highest")
-                .tag(Game.SortBy.highest)
-            Text("Lowest")
-                .tag(Game.SortBy.lowest)
-        }.pickerStyle(.segmented)
-            .frame(width: 150)
-        
-        List(playersSorted, id: \.id) { player in
+        VStack {
             HStack {
-                Image(systemName: "person.fill")
-                    .padding(10)
-                    .foregroundStyle(getColor(color: player.color))
-                Text(player.name)
-                    .padding(10)
-
-                Stepper("Points: \(player.points)", onIncrement: {
-                    player.points += 1
-                }, onDecrement: {
-                    if player.points > 0 {
-                        player.points -= 1
+                Button {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                    showingDetail = false
                     }
-                })
-            }.swipeActions {
-                Button("Delete") {
-                    deletePlayer(player: player)
+                } label: {
+                    Image(systemName: "chevron.left.circle.fill")
+                        .font(.largeTitle)
                 }
-                .tint(.red)
+                .buttonStyle(.plain)
+                                                 
+                Image(systemName: game.icon)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .matchedGeometryEffect(id: game.id, in: nameSpace)
+                Text(game.title)
+                    .font(.largeTitle)
             }
-        }
-        
-        HStack {
-            Spacer()
-            Image(systemName: "person.fill")
-                .foregroundStyle(getColor(color: playerColor))
-            TextField("Player Name", text: $playerName)
-                .frame(maxWidth: 150)
-            Picker("Color", selection: $playerColor) {
-                Text("Red")
-                    .tag("red")
-                Text("Green")
-                    .tag("green")
-                Text("Black")
-                    .tag("black")
+            .padding(.horizontal)
+            .padding(.top)
+            
+            Text("Sorted by: \(game.sortBy.rawValue)")
+            Picker("Sorted by:", selection: $game.sortBy) {
+                Text("Highest")
+                    .tag(Game.SortBy.highest)
+                Text("Lowest")
+                    .tag(Game.SortBy.lowest)
+            }.pickerStyle(.segmented)
+                .frame(width: 150)
+            
+            
+            Text("Player wins by: \(game.winBy.rawValue)")
+            Picker("Who wins:", selection: $game.winBy) {
+                Text("Highest")
+                    .tag(Game.SortBy.highest)
+                Text("Lowest")
+                    .tag(Game.SortBy.lowest)
+            }.pickerStyle(.segmented)
+                .frame(width: 150)
+            
+            List(playersSorted, id: \.id) { player in
+                HStack {
+                    Image(systemName: "person.fill")
+                        .padding(10)
+                        .foregroundStyle(getColor(color: player.color))
+                    Text(player.name)
+                        .padding(10)
+                    
+                    Stepper("Points: \(player.points)", onIncrement: {
+                        player.points += 1
+                    }, onDecrement: {
+                        if player.points > 0 {
+                            player.points -= 1
+                        }
+                    })
+                }.swipeActions {
+                    Button("Delete") {
+                        deletePlayer(player: player)
+                    }
+                    .tint(.red)
+                }
             }
+            
+            HStack {
+                Spacer()
+                Image(systemName: "person.fill")
+                    .foregroundStyle(getColor(color: playerColor))
+                TextField("Player Name", text: $playerName)
+                    .frame(maxWidth: 150)
+                Picker("Color", selection: $playerColor) {
+                    Text("Red")
+                        .tag("red")
+                    Text("Green")
+                        .tag("green")
+                    Text("Black")
+                        .tag("black")
+                }
+                Spacer()
+            }
+            
+            Button("Save Player") {
+                savePlayer()
+            }
+            
             Spacer()
         }
-        
-        Button("Save Player") {
-            savePlayer()
-        }
-        
     }
-        
+    
     func getColor(color: String) -> Color {
         switch color {
         case "red":

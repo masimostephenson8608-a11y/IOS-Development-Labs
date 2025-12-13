@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var scaleEffect = 1.0
     @State var opacity = 0.0
     @State var showGo = false
+    @State var goScaleEffect = 1.0
     @State private var gameStarted = false
     
     var body: some View {
@@ -27,6 +28,8 @@ struct ContentView: View {
             } else if showGo == true {
                 Text("GO!")
                     .font(.system(size: 200))
+                    .scaleEffect(goScaleEffect)
+                    .onAppear(perform: goAnimation)
             }
             Spacer()
             Button("Start Countdown") {
@@ -61,7 +64,17 @@ struct ContentView: View {
                 animateNumber()
             }
         }
+    func goAnimation() {
+        withAnimation(.easeIn(duration: 1)) {
+            goScaleEffect = 1.5
+        }
+        
+        Task {
+            try? await Task.sleep(for: .milliseconds(1000))
+        }
+
     }
+}
 
 #Preview {
     ContentView()

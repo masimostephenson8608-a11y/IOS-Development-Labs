@@ -11,14 +11,16 @@ import SwiftData
 
 @Model
 class Player: Identifiable {
-    var id = UUID()
-    var name: String
+    @Attribute var id: UUID = UUID()
     
-    var color: String
+    @Attribute var name: String
     
-    var points: Int
-    var game: Game?
+    @Attribute var color: String
     
+    @Attribute var points: Int
+    
+    @Relationship var game: Game?
+
     init(id: UUID = UUID(), name: String, color: String, points: Int) {
         self.id = id
         self.name = name

@@ -10,14 +10,14 @@ import SwiftData
 
 @Model
 class Game: Identifiable {
-    var id = UUID()
-    var icon: String
-    var title: String
+    @Attribute(.unique) var id = UUID()
+    @Attribute var icon: String
+    @Attribute var title: String
     @Relationship(deleteRule: .cascade, inverse: \Player.game)
     var players: [Player]
-    var sortBy: SortBy
-    var winBy: SortBy
-    var orderIndex = 0
+    @Attribute var sortBy: SortBy
+    @Attribute var winBy: SortBy
+    @Attribute var orderIndex = 0
     var winning: Player? {
             var points: [Int] = []
             for player in players {
