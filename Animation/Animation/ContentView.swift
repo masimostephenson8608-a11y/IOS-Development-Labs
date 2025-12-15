@@ -14,29 +14,45 @@ struct ContentView: View {
     @State var showGo = false
     @State var goScaleEffect = 1.0
     @State private var gameStarted = false
+    @State var showTransition = false
+    @Namespace var namespace
     
     var body: some View {
-        VStack {
-            if gameStarted == true {
-                Text("\(countDown)")
-                    .font(.system(size: 500))
-                    .scaleEffect(scaleEffect)
-                    .opacity(opacity)
-                    .onAppear() {
-                        animateNumber()
+        ZStack {
+            if !showTransition {
+                VStack {
+                    if gameStarted == true {
+                        Text("\(countDown)")
+                            .font(.system(size: 500))
+                            .scaleEffect(scaleEffect)
+                            .opacity(opacity)
+                            .onAppear() {
+                                animateNumber()
+                            }
+                            .matchedGeometryEffect(id: "go", in: namespace)
+                    } else if showGo == true {
+                        Text("GO!")
+                            .font(.system(size: 200))
+                            .scaleEffect(goScaleEffect)
+                            .onAppear(perform: goAnimation)
+                            .matchedGeometryEffect(id: "go", in: namespace)
+                        Image(systemName: "person.fill")
+                            .frame(width: 100, height: 100)
+//                            .transition(.opacity.combined(with: .scale))
+                            .matchedGeometryEffect(id: "hi", in: namespace, properties: [.frame, .position], anchor: .center)
                     }
-            } else if showGo == true {
-                Text("GO!")
-                    .font(.system(size: 200))
-                    .scaleEffect(goScaleEffect)
-                    .onAppear(perform: goAnimation)
+                    Spacer()
+                    Button("Start Countdown") {
+                        gameStarted = true
+                    }
+                }
+                .padding()
+                .transition(.scale)
+            } else {
+                TransitionView(nameSpace: namespace).transition(.opacity.combined(with: .slide))
+                    .zIndex(1)
             }
-            Spacer()
-            Button("Start Countdown") {
-                gameStarted = true
-            }
-        }
-        .padding()
+        }.animation(.easeInOut(duration: 1), value: showTransition)
     }
     
     func animateNumber() {
@@ -71,6 +87,10 @@ struct ContentView: View {
         
         Task {
             try? await Task.sleep(for: .milliseconds(1000))
+        }
+        
+        withAnimation(.easeIn(duration: 1).delay(2)) {
+            showTransition = true
         }
 
     }
