@@ -16,8 +16,6 @@ struct GameDetailView: View {
     @State var playerColor = ""
     @Environment(\.modelContext) var context
     
-    let nameSpace: Namespace.ID
-    @Binding var showingDetail: Bool
             
     var playersSorted: [Player] {
         if game.sortBy == .highest {
@@ -29,29 +27,10 @@ struct GameDetailView: View {
     }
     var body: some View {
         VStack {
-            HStack {
-                Button {
-                    withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-                    showingDetail = false
-                    }
-                } label: {
-                    Image(systemName: "chevron.left.circle.fill")
-                        .font(.largeTitle)
-                }
-                
-                Spacer()
 
-                Image(systemName: game.icon)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .matchedGeometryEffect(id: game.id, in: nameSpace)
-                Text(game.title)
-                    .font(.largeTitle)
-            }
-            .padding(.horizontal)
-            .padding(.top)
             
             Text("Sorted by: \(game.sortBy.rawValue)")
+                .padding(.top)
             Picker("Sorted by:", selection: $game.sortBy) {
                 Text("Highest")
                     .tag(Game.SortBy.highest)
@@ -92,6 +71,7 @@ struct GameDetailView: View {
                     .tint(.red)
                 }
             }
+            .listStyle(.plain)
             
             HStack {
                 Spacer()
@@ -117,9 +97,9 @@ struct GameDetailView: View {
             Spacer()
         }
         .padding()
+        .navigationTitle(game.title)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
-        .ignoresSafeArea()
     }
     
     func getColor(color: String) -> Color {

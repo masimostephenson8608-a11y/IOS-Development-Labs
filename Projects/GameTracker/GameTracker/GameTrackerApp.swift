@@ -10,10 +10,10 @@ import SwiftData
 
 @main
 struct GameTrackerApp: App {
-    @Namespace var nameSpace
+    
     var body: some Scene {
         WindowGroup {
-            HomeScreen(nameSpace: nameSpace)
+            HomeScreen()
         }.modelContainer(for: Game.self)
     }
 }

@@ -14,20 +14,25 @@ struct HomeScreen: View {
     
     @Environment(\.modelContext) var context
 
-    let nameSpace: Namespace.ID
+//    let nameSpace: Namespace.ID
 
     @State private var selectedGame: Game? = nil
     @State private var showingDetail = false
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                listView
-                
-                if let game = selectedGame, showingDetail {
-                    GameDetailView(game: game, nameSpace: nameSpace, showingDetail: $showingDetail)
-                        .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity))
-                        .zIndex(1)
+            VStack {
+                List {
+                    ForEach(games, id: \.id) { game in
+                        NavigationLink(destination: GameDetailView(game: game)) {
+                            PlayerCell(game: game)
+                                .swipeActions {
+                                    Button("Delete") {
+                                        delete(game: game)
+                                    }.tint(.red)
+                                }
+                        }
+                    }.onMove(perform: moveGames)
                 }
             }
             .toolbar {
@@ -43,52 +48,7 @@ struct HomeScreen: View {
             .toolbarVisibility(showingDetail ? .hidden : .visible, for: .navigationBar)
         }
     }
-    
-    var listView: some View {
-        List {
-            ForEach(games, id: \.id) { game in
-                Button {
-                    selectedGame = game
-                    withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
-                        selectedGame = game
-                        showingDetail = true
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: game.icon)
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .matchedGeometryEffect(
-                                id: game.id,
-                                in: nameSpace
-                            )
-                        VStack {
-                            Text(game.title)
-                                .font(.title.bold())
-                            HStack {
-                                Text("Winning: ")
-                                    .font(.title3)
-                                    .foregroundStyle(.secondary)
-                                Text("\(game.winning?.name ?? "N/A")")
-                                    .font(.title3.bold())
-                                    .foregroundStyle(.black)
-                            }
-                        }
-                        Spacer()
-                    }
-                    .padding(10)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .swipeActions {
-                    Button("Delete") {
-                        delete(game: game)
-                    }.tint(.red)
-                }
-            }
-            .onMove(perform: moveGames)
-        }
-    }
+ 
     func delete(game: Game) {
         context.delete(game)
     }
