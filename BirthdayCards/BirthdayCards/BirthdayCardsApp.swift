@@ -11,7 +11,7 @@ import SwiftUI
 struct BirthdayCardsApp: App {
     var body: some Scene {
         WindowGroup {
-            Text("Nothing")
+            PreviewCardsView()
         }
     }
 }
