@@ -33,6 +33,13 @@ struct ContentView: View {
                             ) {
                                 Text(trip.name)
                             }
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button(role: .destructive) {
+                                    deleteTrip(trip: trip)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                            }
                         }
                     }
                 }
@@ -47,6 +54,11 @@ struct ContentView: View {
                 NewTripScreen()
             }
         }
+    }
+    
+    func deleteTrip(trip: Trip) {
+        modelContext.delete(trip)
+        try? modelContext.save()
     }
 }
 

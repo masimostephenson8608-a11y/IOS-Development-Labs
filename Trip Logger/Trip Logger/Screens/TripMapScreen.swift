@@ -21,6 +21,7 @@ struct TripMapScreen: View {
     @State var selectedEntry: JournalEntry?
     @State var rename = false
     @State var newName = ""
+    @State var activateDismiss = false
     
     
     var body: some View {
@@ -45,6 +46,10 @@ struct TripMapScreen: View {
                 // TODO: Add ability to edit trip name, delete trip
                 
                 if rename == false {
+                    NavigationLink("+") {
+                        PlacePinScreen(existingTrip: trip, activateDismiss: $activateDismiss)
+                    }
+                    
                     Menu {
                         Button("Rename") {
                             withAnimation(.easeInOut(duration: 1.0)) {
@@ -81,17 +86,21 @@ struct TripMapScreen: View {
                 .foregroundStyle(.gray)
                 .opacity(0.8)
             
-            TextField(trip.name, text: $newName)
-                .textFieldStyle(.roundedBorder)
-                .onSubmit {
-                    if !newName.isEmpty {
-                        trip.name = newName
-                        newName = ""
-                        rename = false
+            VStack {
+                Spacer().frame(height: 300)
+                TextField(trip.name, text: $newName)
+                    .textFieldStyle(.roundedBorder)
+                    .multilineTextAlignment(.center)
+                    .onSubmit {
+                        if !newName.isEmpty {
+                            trip.name = newName
+                            newName = ""
+                            rename = false
+                        }
                     }
-                }
-                .frame(width: 300)
-                .padding(45)
+                    .frame(width: 300)
+                    .padding(45)
+            }
         }
     }
 }

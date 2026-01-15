@@ -16,8 +16,8 @@ struct PlacePinScreen: View {
     @Environment(\.dismiss) var dismiss
     @Binding var activateDismiss: Bool
     @State var trip: Trip
-    @State var pinPlaced: Bool
-    @State var save: Bool
+    @State var pinPlaced = false
+    @State var save = false
     let tripName: String
 
     @State var index: Int? = nil
@@ -26,9 +26,14 @@ struct PlacePinScreen: View {
         self.tripName = tripName
         _activateDismiss = activateDismiss
         trip = Trip(name: tripName)
-        pinPlaced = false
-        save = false
         index = nil
+    }
+    
+    init (existingTrip: Trip, activateDismiss: Binding<Bool>) {
+        _activateDismiss = activateDismiss
+        index = nil
+        self.tripName = ""
+        trip = existingTrip
     }
 
     var body: some View {
