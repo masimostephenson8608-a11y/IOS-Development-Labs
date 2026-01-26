@@ -40,8 +40,10 @@ struct Results: Codable {
     let results: [Representative]
 }
 
-struct Representative: Codable, Identifiable {
-    let id = UUID()
+struct Representative: Codable, Identifiable, Equatable {
+    var id: String {
+        return name
+    }
     
     let name: String
     let party: String
@@ -50,5 +52,6 @@ struct Representative: Codable, Identifiable {
     let phone: String
     let office: String
     let link: String
+    
     
 }

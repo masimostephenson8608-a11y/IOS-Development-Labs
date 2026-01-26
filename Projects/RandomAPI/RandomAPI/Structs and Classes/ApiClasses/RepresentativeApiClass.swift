@@ -43,3 +43,23 @@ class RepresentativeApiController: RepresentativeApiControllerProtocol {
         throw errors.buildingURL
     }
 }
+
+class StubRepApiController: RepresentativeApiControllerProtocol {
+    
+    enum FakeError: Error {
+        case testThrow
+    }
+    
+    func fetchRepresentatives(zip: String) async throws -> [Representative] {
+        if zip == "11111" {
+            throw FakeError.testThrow
+        } else {
+            let results = [
+                Representative(name: "Test1", party: "Rep", state: "Utah", district: "Yes", phone: "3333", office: "No", link: "Yes"),
+                //            Representative(name: "Test2", party: "Rep", state: "Utah", district: "Yes", phone: "3333", office: "No", link: "Yes"),
+                //            Representative(name: "Test3", party: "Rep", state: "Utah", district: "Yes", phone: "3333", office: "No", link: "Yes")
+            ]
+            return results
+        }
+    }
+}
