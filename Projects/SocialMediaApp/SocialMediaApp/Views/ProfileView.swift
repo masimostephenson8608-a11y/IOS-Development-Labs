@@ -207,55 +207,7 @@ struct ProfilePostView: View {
         if let post = viewModel.homeViewModel.posts.last(where: {
             $0.user.id == viewModel.homeViewModel.user?.id
         }) {
-            ZStack {
-                VStack {
-
-                    // Profile photo
-                    HStack {
-                        if let profilePhoto = post.user.profilePicture {
-                            Image(profilePhoto)
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .clipShape(.circle)
-                        } else {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                        }
-                        Text(post.user.username)
-                            .font(.title2)
-                            .foregroundStyle(.white)
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-
-                    // Picture
-                    if let photo = post.picture {
-                        Image(photo)
-                            .resizable()
-                            .scaledToFit()
-                    }
-
-                    // Likes/comments
-                    HStack {
-                        Spacer()
-                        Image(systemName: "heart")
-                        Text("\(post.likes)")
-                            .foregroundStyle(.white.secondary)
-                        Spacer()
-                        Image(systemName: "bubble")
-                        Text("\(post.comments.count)")
-                            .foregroundStyle(.white.secondary)
-                        Spacer()
-                    }
-                    .font(.title)
-
-                    Spacer()
-                }
-                .padding(10)
-            }
-            .glassEffect(in: RoundedRectangle(cornerRadius: 20))
-            .padding(.horizontal, 20)
+            PostCellView(viewModel: viewModel.homeViewModel, post: post)
         } else {
             Text("No Posts")
                 .font(.largeTitle.bold()).foregroundStyle(.white)
