@@ -29,12 +29,12 @@ class HomeScreenViewModel {
     }
     
     func fetchPosts() async throws {
-        posts = try await apiService.getAllPosts()
+//        posts = try await apiService.getAllPosts()
     }
     
     func loadUser() async {
         do {
-            self.user = try await apiService.fetchUserData()
+//            self.user = try await apiService.fetchUserData()
         } catch {
             print("Failed to load user:", error)
         }
@@ -42,7 +42,7 @@ class HomeScreenViewModel {
     
     // Function to like posts
     func clickLike(post: MockPostModel) async throws {
-        try await apiService.addLike(to: post)
+//        try await apiService.addLike(to: post)
         
         guard let index = posts.firstIndex(where: { $0.id == post.id }) else { return }
         if posts[index].liked == true {

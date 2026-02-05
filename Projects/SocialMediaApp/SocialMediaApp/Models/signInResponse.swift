@@ -8,14 +8,6 @@ import Foundation
 import SwiftUI
 
 struct signInResponse: Codable {
-    /*
-     "email": "",
-     "userUUID": "",
-     "firstName": "",
-     "lastName": "",
-     "secret": "",
-     "userName": ""
-     */
     
      let email: String
      let userUUID: String

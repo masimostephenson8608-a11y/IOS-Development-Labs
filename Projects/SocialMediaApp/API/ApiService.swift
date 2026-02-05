@@ -125,9 +125,9 @@ class ApiService: ApiServiceProtocol {
             throw ApiError.failedToBuildBaseURL
         }
         
-//            let body: [String : UpdateProfileBody] = [
-//                
-//            ]
+        //            let body: [String : UpdateProfileBody] = [
+        //
+        //            ]
         
         let jsonEncoder = JSONEncoder()
         
@@ -155,16 +155,4 @@ class ApiService: ApiServiceProtocol {
         }
         
     }
-    
-        func addLike(to: MockPostModel) async throws {
-            return
-        }
-        
-        func fetchUserData() async throws -> User {
-            User(id: "", firstName: "", lastName: "", userName: "", profilePicture: "", backgroundProfilePicture: "", bio: "", posts: [], techInterests: [])
-        }
-        
-        func getAllPosts() async throws -> [MockPostModel] {
-            return []
-        }
-    }
+}

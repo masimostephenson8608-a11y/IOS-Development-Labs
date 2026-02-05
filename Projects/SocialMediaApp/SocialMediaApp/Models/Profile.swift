@@ -8,15 +8,6 @@
 import Foundation
 
 struct Profile: Codable {
-    /*
-     "lastName": "",
-     "userUUID": "",
-     "userName": "",
-     "firstName": "",
-     "techInterests": "",
-     "posts": [],
-     "bio": ""
-     */
     
     let lastName: String
     let userUUID: String

@@ -10,7 +10,7 @@ import Observation
 
 extension ApiService {
     
-    //MARK: getPosts
+    //MARK: Get Posts
     func getPosts(userSecret: String) async throws -> [Post] {
         guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/posts")
         else { throw ApiError.failedToBuildBaseURL }
@@ -42,7 +42,8 @@ extension ApiService {
         return []
     }
     
-    func createPost(userSecret: String, post: Post) async throws {
+    //MARK: Create Post
+    func createPost(userSecret: String, postTitle: String, postBody: String) async throws {
         
         struct MakeNewPost: Codable {
             let title: String
@@ -53,7 +54,7 @@ extension ApiService {
             let post: MakeNewPost
         }
         
-        let newPost = MakeNewPost(title: post.id, body: post.body)
+        let newPost = MakeNewPost(title: postTitle, body: postBody)
         let newPostBody = MakeNewPostBody(userSecret: userSecret, post: newPost)
         
         guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/post")
@@ -77,6 +78,49 @@ extension ApiService {
             }
             
             print(httpResponse.statusCode)
+            if httpResponse.statusCode != 200 {
+                print(String(data: data, encoding: .utf8) ?? "No body")
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    //MARK: Edit Post
+    func editPost(userSecret: String, postID: String, newTitle: String, newBody: String) async throws {
+        
+        struct MakeNewPost: Codable {
+            let title: String
+            let body: String
+        }
+        struct MakeNewPostBody: Codable {
+            let userSecret: String
+            let post: MakeNewPost
+        }
+        
+        let newPost = MakeNewPost(title: newTitle, body: newBody)
+        let newPostBody = MakeNewPostBody(userSecret: userSecret, post: newPost)
+        
+        guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/post/edit/\(postID)")
+        else { throw ApiError.failedToBuildBaseURL }
+        
+        let body = newPostBody
+        
+        let jsonEncoder = JSONEncoder()
+        
+        do {
+            let sendData = try jsonEncoder.encode(body)
+            var request = URLRequest(url: baseUrl)
+            
+            request.httpMethod = "POST"
+            request.httpBody = sendData
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else { throw ApiError.failedHttpReponse }
+            
             if httpResponse.statusCode != 200 {
                 print(String(data: data, encoding: .utf8) ?? "No body")
             }

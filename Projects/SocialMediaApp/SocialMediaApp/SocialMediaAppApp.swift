@@ -26,6 +26,11 @@ struct SocialMediaAppApp: App {
 //                            try await api.createPost(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC", post: Post(title: "Testing Making Posts", body: "I will run this test now.") )
                             
 //                            try await api.getPosts(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC")
+                            
+//                            try await api.editPost(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC",
+//                                                   postID: "176C1E9E-47BC-4ED9-9D17-06D7997AE40A",
+//                                                   newTitle: "Editing this post",
+//                                                   newBody: "This post has now been edited")
                         } catch {
                             print("failed")
                         }

@@ -8,40 +8,35 @@ import Foundation
 import SwiftUI
 
 struct Post: Codable, Identifiable {
-//    var likes: Int
-//    var comments: [Comment]
-//    var liked = false
-    
-    var id: String
-    var body: String
-    
-//    mutating func clickLike() {
-//        self.likes += 1
-//    }
-//    
-//    mutating func clickDislike() {
-//        self.likes -= 1
-//    }
-//    
-//    mutating func newComment(user: User, input: String) {
-//        comments.append(Comment(user: user, content: input))
-//    }
-//    
-//    mutating func addPostToUser(post: MockPostModel) {
-//        user.posts.append(post)
-//    }
-    
+
+    let id: String
+    let title: String
+    let body: String
+    let authorUserName: String
+    let authorUserId: String
+    var likes: Int
+    var userLiked: Bool
+    var numComments: Int
+    let createdDate: String
+
     enum CodingKeys: String, CodingKey {
-        case id = "title"
-        case body
+        case id = "postID"
+        case title, body, authorUserName, authorUserId
+        case likes, userLiked, numComments, createdDate
     }
     
     init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
-        self.body = try container.decode(String.self, forKey: .body)
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
+        title = try values.decode(String.self, forKey: .title)
+        body = try values.decode(String.self, forKey: .body)
+        authorUserName = try values.decode(String.self, forKey: .authorUserName)
+        authorUserId = try values.decode(String.self, forKey: .authorUserId)
+        likes = try values.decode(Int.self, forKey: .likes)
+        userLiked = try values.decode(Bool.self, forKey: .userLiked)
+        numComments = try values.decode(Int.self, forKey: .numComments)
+        createdDate = try values.decode(String.self, forKey: .createdDate)
     }
-
 }
 
 
