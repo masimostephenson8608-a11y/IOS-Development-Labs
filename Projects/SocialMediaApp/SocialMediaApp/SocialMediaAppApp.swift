@@ -23,7 +23,9 @@ struct SocialMediaAppApp: App {
                             
 //                            try await api.getProfile(userUUID: "27507300-D4E2-4E29-B4E2-C8BAADBC9CEA", secret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC")
                             
-//                            try await api.createPost(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC", post: Post(title: "Testing Making Posts", body: "I will run this test now.") )
+//                            try await api.createPost(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC",
+//                                                     postTitle: "Made for deletion",
+//                                                     postBody: "Gonna delete.")
                             
 //                            try await api.getPosts(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC")
                             
@@ -31,6 +33,9 @@ struct SocialMediaAppApp: App {
 //                                                   postID: "176C1E9E-47BC-4ED9-9D17-06D7997AE40A",
 //                                                   newTitle: "Editing this post",
 //                                                   newBody: "This post has now been edited")
+                            
+//                            try await api.deletePost(userSecret: "BBC5E3E0-EB4C-469A-90E7-745D8CFAB2CC",
+//                                                     postID: "13550DEA-6044-4B0F-8366-C2000B914B6C")
                         } catch {
                             print("failed")
                         }

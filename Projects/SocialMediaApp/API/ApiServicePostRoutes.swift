@@ -30,6 +30,7 @@ extension ApiService {
             if httpResponse.statusCode == 200 {
                 let decoder = JSONDecoder()
                 let results = try decoder.decode([Post].self, from: data)
+                print("Posts: \(results.count)")
                 print(results)
                 return results
             } else {
@@ -121,6 +122,34 @@ extension ApiService {
             
             guard let httpResponse = response as? HTTPURLResponse else { throw ApiError.failedHttpReponse }
             
+            print(httpResponse.statusCode)
+            if httpResponse.statusCode != 200 {
+                print(String(data: data, encoding: .utf8) ?? "No body")
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    //MARK: Delete Post
+    func deletePost(userSecret: String, postID: String) async throws {
+        guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/post/\(postID)")
+            else { throw ApiError.failedToBuildBaseURL }
+        
+        do {
+            var request = URLRequest(url: baseUrl)
+            
+            request.httpMethod = "DELETE"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw ApiError.failedHttpReponse
+            }
+            
+            print(httpResponse.statusCode)
             if httpResponse.statusCode != 200 {
                 print(String(data: data, encoding: .utf8) ?? "No body")
             }
