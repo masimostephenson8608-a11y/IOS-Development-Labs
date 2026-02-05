@@ -56,7 +56,10 @@ struct HomeScreen: View {
 }
 
 #Preview {
-    HomeScreen(user: User(firstName: "HAHA", lastName: "HAHA", username: "masimo", profilePicture: nil, bio: nil), viewModel: HomeScreenViewModel(apiService: MockAPIService(), selectedPost: nil))
+    HomeScreen(user: User(id: "123123", firstName: "NOOOO",
+                          lastName: "YESSS", userName: "NOPE", profilePicture: nil, backgroundProfilePicture: nil,
+                          bio: nil, posts: [], techInterests: []),
+               viewModel: HomeScreenViewModel(apiService: ApiService()))
 }
 
 

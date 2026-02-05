@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var homeViewModel = HomeScreenViewModel(apiService: MockAPIService())
+    @State var homeViewModel = HomeScreenViewModel(apiService: ApiService())
 
     var body: some View {
         TabView {           // TAB VIEW FOR HOME SCREEN AND PROFILE SCREEN

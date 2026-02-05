@@ -87,7 +87,7 @@ struct EditProfileView: View {
                 .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
-            guard let interests = viewModel.homeViewModel.user?.interests else { return }
+            guard let interests = viewModel.homeViewModel.user?.techInterests else { return }
             viewModel.newInterests = interests
         }
     }

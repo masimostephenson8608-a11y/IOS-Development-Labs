@@ -136,7 +136,7 @@ struct ProfileView: View {
 
                             VStack {
                                 if let interests = viewModel.homeViewModel.user?
-                                    .interests
+                                    .techInterests
                                 {
                                     if !interests.isEmpty {
                                         Text("Interests:")
@@ -146,7 +146,7 @@ struct ProfileView: View {
 
                                         ForEach(
                                             viewModel.homeViewModel.user?
-                                                .interests ?? [""],
+                                                .techInterests ?? [""],
                                             id: \.self
                                         ) {
                                             text in
@@ -180,7 +180,7 @@ struct ProfileView: View {
                             homeViewModel: viewModel.homeViewModel,
                         ),
                         user: viewModel.homeViewModel.user
-                            ?? User(firstName: "", lastName: "", username: ""),
+                            ?? User(id: "", firstName: "", lastName: "", userName: "", profilePicture: nil, backgroundProfilePicture: nil, bio: nil, posts: [], techInterests: []),
                         refreshCounter: refreshCounter
                     )
                 }

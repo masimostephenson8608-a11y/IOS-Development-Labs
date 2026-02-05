@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PostCellView: View {
     @State var viewModel: HomeScreenViewModel
-    let post: Post
+    let post: MockPostModel
     var body: some View {
         ZStack {
             VStack {
