@@ -44,14 +44,14 @@ class HomeScreenViewModel {
     func clickLike(post: MockPostModel) async throws {
 //        try await apiService.addLike(to: post)
         
-        guard let index = posts.firstIndex(where: { $0.id == post.id }) else { return }
-        if posts[index].liked == true {
-            posts[index].clickDislike()
-            posts[index].liked = false
-        } else {
-            posts[index].clickLike()
-            posts[index].liked = true
-        }
+//        guard let index = posts.firstIndex(where: { $0.id == post.id }) else { return }
+//        if posts[index].liked == true {
+//            posts[index].clickDislike()
+//            posts[index].liked = false
+//        } else {
+//            posts[index].clickLike()
+//            posts[index].liked = true
+//        }
         
     }
 }

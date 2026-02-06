@@ -11,8 +11,10 @@ import Observation
 extension ApiService {
     
     //MARK: Get Posts
-    func getPosts(userSecret: String) async throws -> [Post] {
-        guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/posts")
+    func getPosts(userSecret: String, _ pageNumber: Int? = nil) async throws -> [Post] {
+        
+        
+        guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/posts/\(pageNumber ?? 0)")
         else { throw ApiError.failedToBuildBaseURL }
         
         do {
@@ -155,6 +157,43 @@ extension ApiService {
             }
         } catch {
             print(error)
+        }
+    }
+    
+    //MARK: Toggle Like Post
+    func toggleLike(userSecret: String, postID: String) async throws {
+        guard let baseUrl = URL(string: "https://social-media-app.ryanplitt.com/post/\(postID)/like")
+        else { throw ApiError.failedToBuildBaseURL }
+        
+        let body: [String : String] = [
+            "userSecret" : userSecret
+        ]
+        
+        let encoder = JSONEncoder()
+        
+        do {
+            let sendData = try encoder.encode(body)
+            var request = URLRequest(url: baseUrl)
+            
+            request.httpMethod = "POST"
+            request.httpBody = sendData
+            
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw ApiError.failedHttpReponse
+            }
+            
+            print(httpResponse.statusCode)
+            if httpResponse.statusCode != 200 {
+                print(String(data: data, encoding: .utf8) ?? "No body")
+                throw ApiError.failedURLSession
+            }
+        } catch {
+            throw error
         }
     }
 }

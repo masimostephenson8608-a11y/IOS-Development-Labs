@@ -15,7 +15,7 @@ struct User: Codable, Identifiable {
     var profilePicture: String?
     var backgroundProfilePicture: String?
     var bio: String?
-    var posts: [MockPostModel]
+    var posts: [Post]
     var techInterests: [String] = []
     
     enum CodingKeys: String, CodingKey {

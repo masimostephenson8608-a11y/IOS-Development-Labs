@@ -23,9 +23,9 @@ class CommentViewModel {
     }
         
     func addComment(user: User) {
-        guard let index = homeViewModel.posts.firstIndex(where: { $0.id == postID }) else { return }
-        homeViewModel.posts[index].newComment(user: user, input: content)
-        content = ""
+//        guard let index = homeViewModel.posts.firstIndex(where: { $0.id == postID }) else { return }
+//        homeViewModel.posts[index].newComment(user: user, input: content)
+//        content = ""
     }
     
     var currentPost: MockPostModel? {
