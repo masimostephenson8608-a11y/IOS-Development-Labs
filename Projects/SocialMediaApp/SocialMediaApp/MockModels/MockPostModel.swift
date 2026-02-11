@@ -10,7 +10,7 @@ import SwiftUI
 struct MockPostModel: Codable, Identifiable {
     var id = UUID()
     let picture: String?
-    var user: User
+    var user: MockSignInResponse
     var likes: Int
     var comments: [MockCommentModel]
     var liked = false

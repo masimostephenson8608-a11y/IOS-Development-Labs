@@ -20,18 +20,9 @@ class EditProfileViewModel {
         self.homeViewModel = homeViewModel
     }
 
-    func saveChanges() {
-        homeViewModel.user?.username = newUsername
-        homeViewModel.user?.bio = newBio
-        homeViewModel.user?.techInterests = newInterests
-    }
-    //Unaware how the background photos will be recieved, so not adding a way to edit the profile picture yet.
-    
-    /*
-     var username: String
-     var profilePicture: String?
-     var backgroundProfilePicture: String?
-     var bio: String?
-     var interests: [String] = []
-     */
+//    func saveChanges() {
+//        homeViewModel.user?.username = newUsername
+//        homeViewModel.user?.bio = newBio
+//        homeViewModel.user?.techInterests = newInterests
+//    }
 }

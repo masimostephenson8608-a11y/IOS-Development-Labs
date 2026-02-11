@@ -11,6 +11,6 @@ import SwiftUI
 
 struct MockCommentModel: Codable, Identifiable {
     var id = UUID()
-    let user: User
+    let user: MockSignInResponse
     let content: String
 }

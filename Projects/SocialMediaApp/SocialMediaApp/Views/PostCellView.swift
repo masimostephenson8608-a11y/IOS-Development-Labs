@@ -9,47 +9,53 @@ import SwiftUI
 
 struct PostCellView: View {
     @State var viewModel: HomeScreenViewModel
-    let post: MockPostModel
+    let user: SignInResponse
+    @State var post: Post
+    @Binding var shouldRefresh: Bool
+    
     var body: some View {
         ZStack {
             VStack {
-                Spacer()        // Getting the profile photos to display above the posts
-                if let profilePhoto = post.user.profilePicture {
-                    HStack {
-                        Image(profilePhoto)
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .clipShape(.circle)
-                            .padding(.horizontal, 10)
-                        Text(post.user.username)
-                            .font(.title2)
-                            .foregroundStyle(.white)
-                        Spacer()
-                    }
-                } else {
-                    HStack {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .padding(.horizontal, 10)
-                        Text(post.user.username)
-                            .font(.title2)
-                            .foregroundStyle(.white)
-                        Spacer()
-                    }
-                }
-                if let photo = post.picture {
-                    Image(photo).resizable()
-                        .scaledToFit()
-                }
+                Spacer()  // Getting the profile photos to display above the posts
+
                 HStack {
                     Spacer()
-                    Button {        // Button for liking posts
+                        .frame(maxWidth: 25)
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .padding(.horizontal, 10)
+                    Text(post.authorUserName)
+                        .font(.title2.bold())
+                        .foregroundStyle(.white)
+                    Spacer()
+                }
+
+                Text(post.title)
+                    .font(.title2)
+                    .foregroundStyle(.white)
+                    .padding(.bottom, 5)
+
+                Text(post.body)
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                    .multilineTextAlignment(.center)
+                    .frame(width: 325)
+                    .padding(10)
+                    .padding(.bottom, 15)
+                
+                Text(post.createdDate)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+
+                HStack {
+                    Spacer()
+                    Button {  // Button for liking posts
                         Task {
-                            try await viewModel.clickLike(post: post)
+                            try await viewModel.postToggleLike(post: $post)
                         }
                     } label: {
-                        if post.liked == true {
+                        if post.userLiked == true {
                             Image(systemName: "heart.fill")
                         } else {
                             Image(systemName: "heart")
@@ -65,19 +71,20 @@ struct PostCellView: View {
                         Image(systemName: "bubble")
                     }
                     .frame(width: 45, height: 45).glassEffect()
-                    Text("\(post.comments.count)")
+                    Text("\(post.numComments)")
                         .foregroundStyle(.white.secondary)
                     Spacer()
                 }
                 .font(.title)
                 Spacer()
-                    .onAppear() {
-                        print(post.comments)
-                    }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(.white.tertiary)
+                    .padding(.horizontal, 20)
+            )
             .padding(10)
-        }.glassEffect(in: RoundedRectangle(cornerRadius: 20)).padding(.horizontal, 20)
-
+        }
     }
 }

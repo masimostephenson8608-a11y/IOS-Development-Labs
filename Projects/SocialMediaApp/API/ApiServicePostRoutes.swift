@@ -86,6 +86,7 @@ extension ApiService {
             }
         } catch {
             print(error)
+            throw error
         }
     }
     

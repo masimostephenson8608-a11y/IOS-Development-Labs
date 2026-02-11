@@ -8,13 +8,6 @@ import Foundation
 import SwiftUI
 
 struct Comment: Codable, Identifiable {
-    /*
-     "commentId": "UUID",
-       "body": "string",
-       "userName": "string",
-       "userId": "UUID",
-       "createdDate": "2025-06-30T00:00:00Z"
-     */
     let id: String
     var body: String
     var userName: String

@@ -10,7 +10,7 @@ import SwiftUI
 import Observation
 
 protocol ApiServiceProtocol {
-    func login(_ email: String, _ password: String) async throws -> signInResponse
+    func login(_ email: String, _ password: String) async throws -> SignInResponse
     func getProfile(userUUID: String, secret: String) async throws -> Profile
     func updateProfile(userSecret: String, profile: Profile, secret: String) async throws
     func getPosts(userSecret: String, _ pageNumber: Int?) async throws -> [Post]

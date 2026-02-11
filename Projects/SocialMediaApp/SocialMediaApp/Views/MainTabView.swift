@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @State var homeViewModel = HomeScreenViewModel(apiService: ApiService())
+    @Environment(HomeScreenViewModel.self) var homeViewModel
 
     var body: some View {
         TabView {           // TAB VIEW FOR HOME SCREEN AND PROFILE SCREEN
@@ -21,12 +21,12 @@ struct MainTabView: View {
                 }
                 
                 Tab () {
-                    ProfileView(viewModel: ProfileViewModel(homeViewModel: homeViewModel))
+//                    ProfileView(viewModel: ProfileViewModel(homeViewModel: homeViewModel))
                 } label: {
                     Image(systemName: "person.circle.fill")
                     Text("Profile")
                 }
             }
-        }
+        }.environment(homeViewModel)
     }
 }

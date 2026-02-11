@@ -15,54 +15,48 @@ import SwiftUI
 
 struct CommentView: View {
     @Environment(\.dismiss) var dismiss
-    let user: User
     @State var viewModel: CommentViewModel
+    @Binding var shouldRefresh: Bool
+    let postID: String
     //MARK: Initializing Properties
 
     var body: some View {
         NavigationStack {
             VStack {
-                if let post = viewModel.currentPost {
-                    if post.comments.isEmpty {
-                        Spacer()
-                        Text("No Comments Yet")
-                            .navigationTitle("Comments")
-                            .navigationBarTitleDisplayMode(.inline)
-                        Spacer()
-                    } else {
-                        VStack {
-                            List {
-                                //MARK: ForEach Loop
-                                ForEach(post.comments) { comment in
-                                    Section {
-                                        HStack {
-                                            if let profilePicture = comment.user.profilePicture {
-                                                Image(profilePicture)
-                                                    .resizable()
-                                                    .frame(width: 25, height: 25)
-                                                    .clipShape(.circle)
-                                            } else {
-                                                Image(systemName: "person.circle.fill")
-                                                    .resizable()
-                                                    .frame(width: 50, height: 50)
-                                                    .padding(.trailing, 15)
-                                                
-                                            }
-                                            Text(comment.user.username).font(.title2)
-                                        }
-                                        Text("\(comment.content)").font(.title3)
-                                    }
-                                }
-                            }
-
-                        }
+                if viewModel.comments.isEmpty {
+                    Spacer()
+                    Text("No Comments Yet")
                         .navigationTitle("Comments")
                         .navigationBarTitleDisplayMode(.inline)
+                    Spacer()
+                } else {
+                    VStack {
+                        List {
+                            //MARK: ForEach Loop
+                            ForEach(viewModel.comments) { (comment: Comment) in
+                                Section {
+                                    HStack {
+
+                                        Image(systemName: "person.circle.fill")
+                                            .resizable()
+                                            .frame(width: 50, height: 50)
+                                            .padding(.trailing, 15)
+
+                                        Text("\(comment.userName)").font(
+                                            .title2
+                                        )
+                                    }
+                                    Text(comment.body).font(.title3)
+                                }
+                            }
+                        }
 
                     }
-                } else {
-                    Text("Post Not Found")
+                    .navigationTitle("Comments")
+                    .navigationBarTitleDisplayMode(.inline)
+
                 }
+
                 Spacer()
                 HStack {
                     TextField("Add Comment", text: $viewModel.content)
@@ -70,11 +64,32 @@ struct CommentView: View {
                         .padding(20)
                     Spacer()
                     Button {
-                        viewModel.addComment(user: user)
+                        viewModel.addComment(postID: postID)
+                        shouldRefresh = true
                     } label: {
                         Image(systemName: "arrow.up.message")
                     }
                     .padding(.trailing, 20)
+                }
+            }
+        }
+        .onAppear {
+            do {
+                Task {
+                    viewModel.comments = try await viewModel.getComments(postID: postID)
+                }
+            }
+        }
+        .onChange(of: viewModel.shouldRefresh) { _, newValue in
+            if newValue == true {
+                do {
+                    Task {
+                        viewModel.comments = try await viewModel.getComments(postID: postID)
+                        viewModel.shouldRefresh = false
+                        shouldRefresh = true
+                    }
+                } catch {
+                    print(error)
                 }
             }
         }

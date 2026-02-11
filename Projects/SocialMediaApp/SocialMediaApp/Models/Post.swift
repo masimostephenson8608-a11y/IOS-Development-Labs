@@ -7,7 +7,7 @@
 import Foundation
 import SwiftUI
 
-struct Post: Codable, Identifiable {
+struct Post: Codable, Identifiable, Equatable {
 
     let id: String
     let title: String
@@ -18,6 +18,19 @@ struct Post: Codable, Identifiable {
     var userLiked: Bool
     var numComments: Int
     let createdDate: String
+    
+    mutating func toggleLike() {
+        if userLiked {
+            likes -= 1
+        } else {
+            likes += 1
+        }
+        userLiked.toggle()
+    }
+    
+    mutating func incComments() {
+        self.numComments += 1
+    }
 
     enum CodingKeys: String, CodingKey {
         case id = "postID"

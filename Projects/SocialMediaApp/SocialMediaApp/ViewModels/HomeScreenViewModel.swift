@@ -13,45 +13,29 @@ import Observation
 @Observable
 class HomeScreenViewModel {
     var apiService: ApiService
-    var selectedPost: MockPostModel? = nil
-    var user: User?
+    var selectedPost: Post?
+    var user: SignInResponse?
+    var profile: Profile?
     
     
-    var posts: [MockPostModel] = []
+    var posts: [Post] = []
     
     // Initializing the properties such as the Mock API Service
-    init(apiService: ApiService, selectedPost: MockPostModel? = nil) {
+    init(apiService: ApiService, selectedPost: Post? = nil, user: SignInResponse? = nil, profile: Profile? = nil) {
         self.apiService = apiService
         self.selectedPost = selectedPost
-        Task {
-            await loadUser()
         }
-    }
     
     func fetchPosts() async throws {
-//        posts = try await apiService.getAllPosts()
+        self.posts = try await apiService.getPosts(userSecret: user!.secret)
     }
     
-    func loadUser() async {
-        do {
-//            self.user = try await apiService.fetchUserData()
-        } catch {
-            print("Failed to load user:", error)
-        }
+    func postToggleLike(post: Binding<Post>) async throws {
+        try await apiService.toggleLike(userSecret: user!.secret, postID: post.id)
+        post.wrappedValue.toggleLike()
     }
     
-    // Function to like posts
-    func clickLike(post: MockPostModel) async throws {
-//        try await apiService.addLike(to: post)
-        
-//        guard let index = posts.firstIndex(where: { $0.id == post.id }) else { return }
-//        if posts[index].liked == true {
-//            posts[index].clickDislike()
-//            posts[index].liked = false
-//        } else {
-//            posts[index].clickLike()
-//            posts[index].liked = true
-//        }
-        
+    func addCommentNum() {
+        self.posts = posts
     }
 }

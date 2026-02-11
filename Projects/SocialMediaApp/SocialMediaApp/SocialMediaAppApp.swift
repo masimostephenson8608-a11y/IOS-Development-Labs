@@ -12,7 +12,7 @@ struct SocialMediaAppApp: App {
     let api = ApiService()
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            LoginView()
                 .onAppear() {
                     Task {
                         do {

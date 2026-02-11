@@ -19,7 +19,7 @@ class ApiService: ApiServiceProtocol {
     }
     
     //MARK: Login Function
-    func login(_ email: String, _ password: String) async throws -> signInResponse {
+    func login(_ email: String, _ password: String) async throws -> SignInResponse {
         // Creating Base URL
         guard let url = URL(string:"https://social-media-app.ryanplitt.com/auth/login") else {
             throw ApiError.failedToBuildBaseURL
@@ -52,7 +52,7 @@ class ApiService: ApiServiceProtocol {
             
             if httpResponse.statusCode == 200 {
                 let decoder = JSONDecoder()
-                let results = try decoder.decode(signInResponse.self, from: data)
+                let results = try decoder.decode(SignInResponse.self, from: data)
                 print(results)
                 return results
             } else {

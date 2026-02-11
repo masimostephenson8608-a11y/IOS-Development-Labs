@@ -9,10 +9,10 @@ import SwiftUI
 
 struct HomeScreen: View {
     @State var viewModel: HomeScreenViewModel // MAKE INSTANCE OF HomeScreenViewModel
-    let user: User
+    let user: SignInResponse
     @State var newPost = false
-    
-    init(user: User, viewModel: HomeScreenViewModel) {   // Initailizer for the user and the STATE of the viewModel
+    @State var shouldRefresh = false
+    init(user: SignInResponse, viewModel: HomeScreenViewModel) {   // Initailizer for the user and the STATE of the viewModel
         self._viewModel = State(wrappedValue: viewModel)
         self.user = user
     }
@@ -20,16 +20,18 @@ struct HomeScreen: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                RadialGradient(colors: [.white, .black], center: .bottomLeading, startRadius: 1000, endRadius: 200).ignoresSafeArea()
+                BackgroundView().ignoresSafeArea()
                 ScrollView {
                     LazyVStack {
                         ForEach(viewModel.posts) { post in
-                            PostCellView(viewModel: viewModel, post: post)
+                            PostCellView(viewModel: viewModel, user: user, post: post, shouldRefresh: $shouldRefresh)
                         }
                         .sheet(item: $viewModel.selectedPost) { post in  // Making the sheet view for the Comments View
-                            CommentView(user: user, viewModel: CommentViewModel(homeViewModel: viewModel, postID: post.id))
+                            CommentView(viewModel: CommentViewModel(homeViewModel: viewModel), shouldRefresh: $shouldRefresh, postID: post.id)
                         }
-                    }
+                    }.id(shouldRefresh)
+                }.refreshable {
+                    try? await viewModel.fetchPosts()
                 }
             }
             .navigationTitle("For You Page")
@@ -42,7 +44,7 @@ struct HomeScreen: View {
                 }
             }
             .sheet(isPresented: $newPost) {
-                NewPostView(viewModel: NewPostViewModel(homeViewModel: viewModel))
+                NewPostView(viewModel: NewPostViewModel(homeViewModel: viewModel, userSecret: user.secret), shouldRefresh: $shouldRefresh)
             }
         }
         .onAppear() {
@@ -52,13 +54,28 @@ struct HomeScreen: View {
                 }
             }
         }
+        .onChange(of: viewModel.posts) {
+            viewModel.posts.sort(by: {$0.createdDate > $1.createdDate})
+        }
+        
+        .onChange(of: shouldRefresh) {_, newValue in
+            if newValue == true {
+                do {
+                    Task {
+                        try await viewModel.fetchPosts()  // MARK: Fetch Posts
+                        viewModel.addCommentNum()
+                        viewModel.posts.sort(by: {$0.createdDate > $1.createdDate})
+                        shouldRefresh = false
+                        viewModel = viewModel
+                    }
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    HomeScreen(user: User(id: "123123", firstName: "NOOOO",
-                          lastName: "YESSS", userName: "NOPE", profilePicture: nil, backgroundProfilePicture: nil,
-                          bio: nil, posts: [], techInterests: []),
+    HomeScreen(user: SignInResponse(email: "email", userUUID: "UserID", firstName: "Masimo", lastName: "preview", secret: "mockID", userName: "PreMasi"),
                viewModel: HomeScreenViewModel(apiService: ApiService()))
 }
 

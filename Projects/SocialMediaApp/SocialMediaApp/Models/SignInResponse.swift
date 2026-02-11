@@ -7,8 +7,7 @@
 import Foundation
 import SwiftUI
 
-struct signInResponse: Codable {
-    
+struct SignInResponse: Codable {
      let email: String
      let userUUID: String
      let firstName: String

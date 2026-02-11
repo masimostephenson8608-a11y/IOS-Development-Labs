@@ -7,7 +7,7 @@
 import Foundation
 import SwiftUI
 
-struct User: Codable, Identifiable {
+struct MockSignInResponse: Codable, Identifiable {
     let id: String
     let firstName: String
     let lastName: String
@@ -31,7 +31,7 @@ struct User: Codable, Identifiable {
     }
     
     init(id: String, firstName: String, lastName: String, userName: String, profilePicture: String?,
-         backgroundProfilePicture: String?, bio: String?, posts: [MockPostModel], techInterests: [String]) {
+         backgroundProfilePicture: String?, bio: String?, posts: [Post], techInterests: [String]) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
@@ -50,9 +50,7 @@ struct User: Codable, Identifiable {
         lastName = try values.decode(String.self, forKey: .lastName)
         username = try values.decode(String.self, forKey: .username)
         bio = try values.decode(String?.self, forKey: .bio)
-        posts = try values.decode([MockPostModel].self, forKey: .posts)
+        posts = try values.decode([Post].self, forKey: .posts)
         techInterests = try values.decode([String].self, forKey: .techInterests)
     }
-    
-    static var user = User(id: "1239487129479", firstName: "Joel", lastName: "SHALALAAL", userName:"EWW", profilePicture: "Picture2", backgroundProfilePicture: nil, bio: nil, posts: [], techInterests: [])
 }
