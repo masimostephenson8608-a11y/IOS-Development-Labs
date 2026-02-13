@@ -7,7 +7,7 @@
 import Foundation
 import SwiftUI
 
-struct Post: Codable, Identifiable, Equatable {
+struct Post: Codable, Identifiable, Equatable, Hashable {
 
     let id: String
     let title: String

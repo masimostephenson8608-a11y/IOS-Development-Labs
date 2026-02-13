@@ -78,6 +78,13 @@ struct LoginView: View {
                 MainTabView().environment(homeViewModel)
             }
         }
+        .onChange(of: homeViewModel.user) {
+            if let user = homeViewModel.user {
+                Task {
+                    try! await homeViewModel.apiService.getProfile(userUUID: user.userUUID, secret: user.secret)
+                }
+            }
+        }
     }
     
     var tryAgainView: some View {

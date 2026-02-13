@@ -11,9 +11,9 @@ struct Profile: Codable {
     
     let lastName: String
     let userUUID: String
-    let userName: String
+    var userName: String
     let firstName: String
     var techInterests: String
-    var posts: [MockPostModel] = []
+    var posts: [Post] = []
     var bio: String
 }

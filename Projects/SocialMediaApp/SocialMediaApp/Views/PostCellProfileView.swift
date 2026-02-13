@@ -1,14 +1,15 @@
 //
-//  PostCellView.swift
+//  PostCellProfileView.swift
 //  SocialMediaApp
 //
-//  Created by Masimo Stephenson on 1/28/26.
+//  Created by Masimo Stephenson on 2/12/26.
 //
 
 import SwiftUI
 
-struct PostCellView: View {
+struct PostCellProfileView: View {
     @State var viewModel: HomeScreenViewModel
+    @State var profileViewModel: ProfileViewModel
     @State var post: Post
     @Binding var shouldRefresh: Bool
     
@@ -16,7 +17,7 @@ struct PostCellView: View {
         ZStack {
             VStack {
                 Spacer()  // Getting the profile photos to display above the posts
-
+                
                 HStack {
                     Spacer()
                         .frame(maxWidth: 25)
@@ -29,12 +30,12 @@ struct PostCellView: View {
                         .foregroundStyle(.white)
                     Spacer()
                 }
-
+                
                 Text(post.title)
                     .font(.title2)
                     .foregroundStyle(.white)
                     .padding(.bottom, 5)
-
+                
                 Text(post.body)
                     .font(.caption)
                     .foregroundStyle(.white)
@@ -46,7 +47,7 @@ struct PostCellView: View {
                 Text(post.createdDate)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-
+                
                 HStack {
                     Spacer()
                     Button {  // Button for liking posts
@@ -65,7 +66,7 @@ struct PostCellView: View {
                         .foregroundStyle(.white.secondary)
                     Spacer()
                     Button {
-                        viewModel.selectedPost = post
+                        profileViewModel.selectedPost = post
                     } label: {
                         Image(systemName: "bubble")
                     }

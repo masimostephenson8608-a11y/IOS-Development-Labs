@@ -24,8 +24,10 @@ struct HomeScreen: View {
                 ScrollView {
                     LazyVStack {
                         ForEach(viewModel.posts) { post in
-                            PostCellView(viewModel: viewModel, user: user, post: post, shouldRefresh: $shouldRefresh)
+                            PostCellView(viewModel: viewModel, post: post, shouldRefresh: $shouldRefresh)
                         }
+                        
+                        
                         .sheet(item: $viewModel.selectedPost) { post in  // Making the sheet view for the Comments View
                             CommentView(viewModel: CommentViewModel(homeViewModel: viewModel), shouldRefresh: $shouldRefresh, postID: post.id)
                         }
@@ -62,14 +64,31 @@ struct HomeScreen: View {
             if newValue == true {
                 do {
                     Task {
-                        try await viewModel.fetchPosts()  // MARK: Fetch Posts
+                        try await viewModel.fetchPosts()
                         viewModel.addCommentNum()
                         viewModel.posts.sort(by: {$0.createdDate > $1.createdDate})
                         shouldRefresh = false
-                        viewModel = viewModel
                     }
                 }
             }
+        }
+        
+//        .onChange(of: viewModel.shouldRefreshBetweenProfileAndHomeViews) {_, newValue in
+//            if newValue == true {
+//                do {
+//                    Task {
+//                        try await viewModel.fetchPosts()
+//                        viewModel.addCommentNum()
+//                        viewModel.posts.sort(by: {$0.createdDate > $1.createdDate})
+//                        viewModel.shouldRefreshBetweenProfileAndHomeViews = false
+//                    }
+//                }
+//            }
+//        }
+        
+        .onChange(of: viewModel.shouldRefreshBetweenProfileAndHomeViews) {
+            shouldRefresh = true
+            viewModel.shouldRefreshBetweenProfileAndHomeViews = false
         }
     }
 }

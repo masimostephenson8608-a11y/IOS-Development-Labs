@@ -61,6 +61,7 @@ struct NewPostView: View {
         }
         .onChange(of: viewModel.shouldRefresh) {
             shouldRefresh = true
+            viewModel.homeViewModel.shouldRefreshBetweenProfileAndHomeViews = true
         }
     }
 }

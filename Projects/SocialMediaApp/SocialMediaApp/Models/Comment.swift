@@ -20,7 +20,7 @@ struct Comment: Codable, Identifiable {
     }
     
     init(from decoder: any Decoder) throws {
-        var values = try decoder.container(keyedBy: CodingKeys.self)
+        let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
         body = try values.decode(String.self, forKey: .body)
         userName = try values.decode(String.self, forKey: .userName)
