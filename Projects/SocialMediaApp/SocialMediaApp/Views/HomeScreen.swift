@@ -73,19 +73,6 @@ struct HomeScreen: View {
             }
         }
         
-//        .onChange(of: viewModel.shouldRefreshBetweenProfileAndHomeViews) {_, newValue in
-//            if newValue == true {
-//                do {
-//                    Task {
-//                        try await viewModel.fetchPosts()
-//                        viewModel.addCommentNum()
-//                        viewModel.posts.sort(by: {$0.createdDate > $1.createdDate})
-//                        viewModel.shouldRefreshBetweenProfileAndHomeViews = false
-//                    }
-//                }
-//            }
-//        }
-        
         .onChange(of: viewModel.shouldRefreshBetweenProfileAndHomeViews) {
             shouldRefresh = true
             viewModel.shouldRefreshBetweenProfileAndHomeViews = false
