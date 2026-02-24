@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct SelectRandomUsersApp: App {
+    @State var userViewModel = UserScreenViewModel(names: [])
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            UserScreenView(viewModel: userViewModel)
         }
     }
 }
