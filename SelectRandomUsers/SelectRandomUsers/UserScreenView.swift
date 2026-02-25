@@ -15,60 +15,69 @@ struct UserScreenView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                ScrollView {
-                    ForEach(viewModel.names, id: \.self) { user in
-                        Text(user.name)
-                            .frame(width: 100)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 25)
-                            .background(
-                    RoundedRectangle(cornerRadius: 25)
-                        .foregroundStyle(user.selected ? Color.blue.opacity(0.5) : Color.blue)
-                    )
-                    }
-                }
-                Spacer()
-
-                Stepper(
-                    "Select Amount: \(viewModel.selectAmount)",
-                    value: $viewModel.selectAmount,
-                    in: 0...viewModel.names.count,
-                    step: Int.Stride(1.0)
-                )
-                .padding()
-
-                Button("Randomly Select") {
-                    viewModel.randomSelect()
-                }.padding()
-            }
-            .overlay {
-                if showAddUser == true {
-                    AddUserView
-                }
-            }.transition(.opacity)
-            .toolbar {
-                ToolbarItem {
-                    //MARK: FINISH EDIT BUTTON
-                    Button("Edit") {
-                        if editMode == false {
-                            editMode = true
-                        } else {
-                            editMode = false
+            ZStack {
+                if editMode == true {
+                    EditUserList
+                } else {
+                    VStack {
+                        ScrollView {
+                            UserList
+                        }
+                        Spacer()
+                        
+                        Stepper(
+                            "Select Amount: \(viewModel.selectAmount)",
+                            value: $viewModel.selectAmount,
+                            in: 0...viewModel.names.count,
+                            step: Int.Stride(1.0)
+                        )
+                        .padding()
+                        
+                        Button("Randomly Select") {
+                            viewModel.randomSelect()
+                        }.padding()
+                    }.transition(.opacity)
+                    .overlay {
+                        if showAddUser == true {
+                            AddUserView
                         }
                     }
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Add User") {
-                        withAnimation {
-                            showAddUser = true
+                        .toolbar {
+                            ToolbarItem {
+                                //MARK: FINISH EDIT BUTTON
+                                Button("Edit") {
+                                    if editMode == false {
+                                        editMode = true
+                                    } else {
+                                        editMode = false
+                                    }
+                                }
+                            }
+                            ToolbarItem(placement: .bottomBar) {
+                                Button("Add User") {
+                                    withAnimation {
+                                        showAddUser = true
+                                    }
+                                }
+                            }
                         }
-                    }
                 }
             }
-
         }  //END NAVIGATION
         .padding()
+    }
+    
+    var UserList: some View {
+        ForEach(viewModel.names, id: \.self) { user in
+            Text(user.name)
+                .frame(width: 100)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 25)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .foregroundStyle(user.selected ? Color.blue.opacity(0.5) : Color.blue)
+                )
+        }
     }
     
     var AddUserView: some View {
@@ -117,6 +126,28 @@ struct UserScreenView: View {
             }.padding()
             .background(RoundedRectangle(cornerRadius: 15)
                 .foregroundStyle(.gray))
+    }
+    
+    //MARK: EditUserList
+    var EditUserList: some View {
+        VStack {
+            List {
+                ForEach(viewModel.names, id: \.self) { user in
+                    Text(user.name)
+                        .frame(width: 100)
+                        .padding(.vertical, 20)
+                        .padding(.horizontal, 25)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .foregroundStyle(.white.gradient))
+                        .hoverEffect(.lift)
+                }.onMove(perform: move)
+            }
+        }
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        viewModel.names.move(fromOffsets: source, toOffset: destination)
     }
 }
 
