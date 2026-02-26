@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ShowImageView: View {
+struct ShowUserImage: View {
     let user: User
     var body: some View {
         if let url = URL(string: user.picture.large) {
