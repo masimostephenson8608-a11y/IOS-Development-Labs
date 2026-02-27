@@ -8,47 +8,60 @@
 import SwiftUI
 
 struct ShowUserInfo: View {
-    let user: User
     @Binding var selectedShowInfo: User?
 
     @Environment(SettingsViewModel.self) var settings
     var body: some View {
-        VStack {
-            if settings.showEmail {
-                Text("Email: \(user.email)")
-            }
-            
-            if settings.showPassword {
-                Text("password: \(user.login.password)")
-            }
-            
-            if settings.showCell {
-                Text("Cell: \(user.cell)    Phone: \(user.phone)")
-            }
-            
-            if settings.showGender {
-                Text("Gender: \(user.gender)")
-            }
-            
-            if settings.showLocation {
-                Text("""
-                Location: \(user.location.street.number) \(user.location.street.name)
-                \(user.location.state),
-                \(user.location.postcode)
+        if let user = selectedShowInfo {
+            VStack {
+                List {
+                    if settings.showEmail {
+                        Text("Email: \(user.email)")
+                            .foregroundStyle(.white)
+                    }
+                    
+                    if settings.showPassword {
+                        Text("password: \(user.login.password)")
+                            .foregroundStyle(.white)
+                    }
+                    
+                    if settings.showCell {
+                        Text("""
+                        Cell: \(user.cell)
+                        Phone: \(user.phone)
+                        """)
+                            .foregroundStyle(.white)
+                    }
+                    
+                    if settings.showGender {
+                        Text("Gender: \(user.gender)")
+                            .foregroundStyle(.white)
+                    }
+                    
+                    if settings.showLocation {
+                        Text("""
+                Location: \(user.location.street.number) \(user.location.street.name),
+                \(user.location.state), \(user.location.postcode)
                 """).multilineTextAlignment(.center)
-            }
-            
-            if settings.showNat {
-                Text("Nation: \(user.nat)")
-            }
-            
-            Button("Dismiss") {
-                withAnimation {
-                    selectedShowInfo = nil
+                            .foregroundStyle(.white)
+                    }
+                    
+                    if settings.showNat {
+                        Text("Nation: \(user.nat)")
+                            .foregroundStyle(.white)
+                    }
                 }
-            }
-        }.padding(10)
-        .background(RoundedRectangle(cornerRadius: 20)
-            .foregroundStyle(.gray))
+                Button("Dismiss") {
+                    withAnimation {
+                        selectedShowInfo = nil
+                    }
+                }.padding(5)
+                    .foregroundStyle(.white)
+                    .background(Capsule()
+                        .foregroundStyle(.gray.secondary))
+            }.padding(10)
+                .background(RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(.gray))
+        }
     }
 }

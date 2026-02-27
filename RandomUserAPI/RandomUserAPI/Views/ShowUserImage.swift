@@ -23,6 +23,7 @@ struct ShowUserImage: View {
                             maxWidth: .infinity,
                             maxHeight: 300
                         )
+                        .clipped()
                     
                 case .failure(let error):
                     Image(systemName: "xmark.circle")

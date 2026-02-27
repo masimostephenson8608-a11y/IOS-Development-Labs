@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TabViewScreen: View {
-    var settings = SettingsViewModel()
+    @State var settings = SettingsViewModel()
     var body: some View {
         TabView {
             Tab("User", systemImage: "person") {
@@ -16,7 +16,7 @@ struct TabViewScreen: View {
             }
             
             Tab("Settings", systemImage: "gear") {
-                
+                SettingsView(settings: $settings)
             }
         }
     }

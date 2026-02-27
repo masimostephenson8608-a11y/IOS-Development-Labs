@@ -11,7 +11,7 @@ class APIController {
     let baseURL: String
     
     init() {
-        self.baseURL = "https://randomuser.me/api/"
+        self.baseURL = "https://randompeople.exnovo.app/api"
     }
     
     enum Gender: String {
@@ -38,13 +38,14 @@ class APIController {
                 throw APIErrors.CannotGetHttpResponse
             }
             
+            print(httpReponse.statusCode)
             if httpReponse.statusCode == 200 {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(APIResponse.self, from: data)
                 print(result)
+                print(result.results)
                 return result.results
             } else {
-                print(httpReponse.statusCode)
                 throw APIErrors.not200response
             }
         } catch {

@@ -14,52 +14,78 @@ struct UserView: View {
     @State var selectedShowInfo: User? = nil
 
     var body: some View {
-        VStack {
-            if !users.isEmpty {
-                ScrollView {
-                    ForEach(users, id: \.id.value) { user in
-                        VStack {
-                            Text("\(user.name.first) \(user.name.last)")
-                            
-                            ShowUserImage(user: user)
-                            
-                            Button("Show Info") {
-                                withAnimation {
-                                    selectedShowInfo = user
+        NavigationStack {
+            VStack {
+                if !users.isEmpty {
+                    ScrollView {
+                        ForEach(users, id: \.id.value) { user in
+                            VStack {
+                                Text("\(user.name.first) \(user.name.last)")
+                                
+                                //MARK: ShowImageUser View
+                                ShowUserImage(user: user)
+                                
+                                Button("Show Info") {
+                                    withAnimation {
+                                        selectedShowInfo = user
+                                    }
+                                }
+                                
+                                //MARK: Overlay
+                            }.overlay() {
+                                if selectedShowInfo?.id == user.id {
+                                    ShowUserInfo(selectedShowInfo: $selectedShowInfo).transition(.opacity)
                                 }
                             }
-                        }.overlay() {
-                            if selectedShowInfo != nil {
-                                ShowUserInfo(user: user, selectedShowInfo: $selectedShowInfo).transition(.opacity)
-                            }
+                            .glassEffect(.regular.tint(.gray.opacity(0.3)), in: RoundedRectangle(cornerRadius: 25, style: .circular))
+                            .padding()
                         }
-                        .glassEffect(.regular, in: .rect)
+                    }
+                    
+                    //MARK: Failed to get user
+                } else {
+                    Text("Retry")
+                    Button {
+                        getData()
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
                     }
                 }
-                
-            } else {
-                Text("Retry")
-                Button {
-                    getData()
-                } label: {
-                    Image(systemName: "arrow.clockwise")
+            }.transition(.scale.combined(with: .opacity))
+                .onAppear {
+                    if users.isEmpty {
+                        getData()
+                    }
                 }
-            }
-        }.transition(.scale.combined(with: .opacity))
-            .onAppear {
-                getData()
-            }
+            
+                .toolbar {
+                    Button {
+                        getData()
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                            .buttonStyle(.glass)
+                    }
+                }
+        }
     }
     
     func getData() {
-//        Task {
-//            do {
-//                users = try await api.getUser()
-//            } catch {
-//                print(error)
+        Task {
+            do {
+                users = try await api.getUser(results: settings.resultCount)
+            } catch {
+                print(error)
+            }
+        }
+//        var newUsers: [User] = []
+//        if settings.resultCount < User.mockUsers.count {
+//            for count in 0...settings.resultCount {
+//                newUsers.append(User.mockUsers[count])
+//                users = newUsers
 //            }
+//        } else {
+//            users = User.mockUsers
 //        }
-        users = [User.mock]
 
     }
 }
