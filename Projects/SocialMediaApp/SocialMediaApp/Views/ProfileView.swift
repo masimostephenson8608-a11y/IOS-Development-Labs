@@ -190,33 +190,3 @@ struct ProfileView: View {
         }
     }
 }
-
-struct ProfilePostView: View {
-    @State var viewModel: ProfileViewModel
-    @Binding var shouldRefresh: Bool
-    
-    var body: some View {
-//        if !viewModel.posts.isEmpty {
-//            ForEach(viewModel.posts, id: \.id) { post in
-//                PostCellProfileView(viewModel: viewModel.homeViewModel,
-//                                    profileViewModel: viewModel,
-//                                    post: post,
-//                                    shouldRefresh: $shouldRefresh).swipeActions() {
-//                                                            Button {
-//                                                                Task {
-//                                                                    await viewModel.homeViewModel.delete(postID: post.id)
-//                                                                    shouldRefresh = true
-//                                                                    viewModel.homeViewModel.shouldRefreshBetweenProfileAndHomeViews = true
-//                                                                }
-//                                                            } label: {
-//                                                                Image(systemName: "trash")
-//                                                            }.tint(.red)
-//                                                        }
-//                
-//            }.id(shouldRefresh)
-//        } else {
-//            Text("No Posts")
-//                .font(.largeTitle.bold()).foregroundStyle(.white)
-//        }
-    }
-}

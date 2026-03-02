@@ -61,7 +61,7 @@ struct ParsingAnalyst {
         return matches
     }
     
-    static func extractAll(from text: String) -> (dates: [String], email: [String], numbers: [String]) {
+    static func extractAll(from text: String) -> (dates: [String], emails: [String], numbers: [String]) {
         let dates = extractDates(from: text)
         let emails = extractEmail(from: text)
         let numbers = extractNumber(from: text)
