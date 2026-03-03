@@ -8,9 +8,14 @@
 import SwiftUI
 import SwiftData
 
+enum DocumentTypes: String {
+    case pdf
+}
+
 @main
 struct DocAssistApp: App {
     let container: ModelContainer
+    @State var storeCategory = StoreCategory()
     
     init() {
         do {
@@ -23,12 +28,17 @@ struct DocAssistApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                Tab("Home", systemImage: "text.rectangle") {
+                    HomeView()
+                }
+                
+                Tab("Files", systemImage: "document.on.document") {
+                    FolderDisplayView()
+                }
+            }
         }
         .modelContainer(container)
+        .environment(storeCategory)
     }
-}
-
-enum DocumentTypes: String {
-    case pdf
 }

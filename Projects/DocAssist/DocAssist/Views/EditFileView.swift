@@ -11,18 +11,13 @@ import SwiftData
 struct EditFileView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
-    let storeCategory: StoreCategory
-    @State var categories: [String]
-    @State var selectedCategory: String
+    @Environment(StoreCategory.self) var storeCategory
     @State var preDoc: PreDocument
     @State var otherTrue = false
     @State var otherCategory: String = ""
     
     init(preDoc: PreDocument) {
-        self.storeCategory = StoreCategory()
         self.preDoc = preDoc
-        self.categories = storeCategory.categories
-        self.selectedCategory = preDoc.category
     }
     
     var body: some View {
@@ -38,11 +33,10 @@ struct EditFileView: View {
                 Text("Category:")
                 
                 pickerView
-                //PLACE PICKER
             }
             .padding()
             
-            if selectedCategory == "Other" {
+            if preDoc.category == "Other" {
                 TextField("Category", text: $otherCategory)
                     .multilineTextAlignment(.center)
                     .padding()
@@ -57,8 +51,8 @@ struct EditFileView: View {
     
     //MARK: Picker View
     var pickerView: some View {
-        Picker("Category", selection: $selectedCategory) {
-            ForEach(categories, id: \.self) { text in
+        Picker("Category", selection: $preDoc.category) {
+            ForEach(storeCategory.categories, id: \.self) { text in
                 Text(text)
                     .tag(text)
             }
@@ -69,6 +63,14 @@ struct EditFileView: View {
     
     //MARK: Save Function
     func saveDocument() {
+        if otherCategory == "" && preDoc.category == "Other" {
+            return
+        }
+        if preDoc.category == "Other" {
+            preDoc.category = otherCategory.trimmingCharacters(in: .whitespacesAndNewlines)
+            storeCategory.addCategory(preDoc.category)
+        }
+        
         let doc = Document(displayName: preDoc.displayName,
                            fileId: preDoc.fileId,
                            filePath: preDoc.filePath,
@@ -89,6 +91,7 @@ struct EditFileView: View {
                            category: preDoc.category,
                            fileHash: preDoc.fileHash)
         context.insert(doc)
+        
         dismiss()
     }
     

@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Observation
 
-struct StoreCategory {
+@Observable
+class StoreCategory {
     let userDefaults = UserDefaults()
     var categories: [String] = []
     var key = "category"
@@ -18,7 +20,7 @@ struct StoreCategory {
         }
     }
     
-    mutating func addCategory(_ category: String) {
+    func addCategory(_ category: String) {
         if !categories.contains(category) {
             categories.append(category)
             userDefaults.set(categories, forKey: key)

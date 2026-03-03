@@ -11,7 +11,14 @@ internal import UniformTypeIdentifiers
 import PDFKit
 import CryptoKit
 
-struct ContentView: View {
+/*
+ Notes:
+ Add more things to make it look like a home view
+ Add Summary
+ Add list of files regarding that summary
+ */
+
+struct HomeView: View {
     @Environment(\.modelContext) var context
     @State private var showPicker = false
     @State private var pickedFileURL: URL?
@@ -86,5 +93,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    HomeView()
 }
